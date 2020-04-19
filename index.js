@@ -1,2 +1,2 @@
-import backend from './lib/index.js'
-export default backend
+import mod from './lib/index.js'
+export default mod

@@ -24,7 +24,7 @@ i18next
     saveMissing: true
   })
 
-app.addHook('onRequest', i18nextMiddleware.handle(i18next))
+app.addHook('preHandler', i18nextMiddleware.handle(i18next))
 
 app.get('/', (req, res) => {
   res.send(req.t('home.title'))
