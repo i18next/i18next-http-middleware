@@ -1,0 +1,63 @@
+{
+  "name": "i18next-http-middleware",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "main": "./cjs/index.js",
+  "exports": {
+    ".": {
+      "require": "./cjs/index.js",
+      "default": "./lib/index.js"
+    }
+  },
+  "module": "./lib/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.9.0",
+    "@babel/preset-env": "7.9.5",
+    "babel-plugin-add-module-exports": "1.0.2",
+    "eslint": "6.8.0",
+    "eslint-config-standard": "14.1.1",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-node": "11.0.0",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-require-path-exists": "1.1.9",
+    "eslint-plugin-standard": "4.0.1",
+    "expect.js": "0.3.1",
+    "express": "4.17.1",
+    "fastify": "2.13.1",
+    "i18next": "19.4.1",
+    "mocha": "7.1.1",
+    "uglify-js": "3.8.1"
+  },
+  "description": "i18next-http-middleware is a middleware to be used with Node.js web frameworks like express and also for Deno.",
+  "keywords": [
+    "i18next",
+    "i18next-backend",
+    "i18next-http-middleware",
+    "express"
+  ],
+  "homepage": "https://github.com/i18next/i18next-http-middleware",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:i18next/i18next-http-middleware.git"
+  },
+  "bugs": {
+    "url": "https://github.com/i18next/i18next-http-middleware/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.github.com/i18next/i18next-http-middleware/master/licence"
+    }
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "compile": "rm -rf cjs && mkdir cjs && babel lib -d cjs --presets=@babel/preset-env --plugins=add-module-exports && echo '{\"type\":\"commonjs\"}' > cjs/package.json",
+    "build": "npm run compile",
+    "test": "npm run lint && npm run build && mocha test -R spec --exit --experimental-modules",
+    "preversion": "npm run test && npm run build && git push",
+    "postversion": "git push && git push --tags"
+  }
+}
