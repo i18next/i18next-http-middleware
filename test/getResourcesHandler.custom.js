@@ -17,7 +17,7 @@ describe('getResourcesHandler custom framework', () => {
   describe('handling a request', () => {
     const handle = i18nextMiddleware.getResourcesHandler(i18next, {
       getQuery: (req) => req.q,
-      contentType: (res, type) => {
+      setContentType: (res, type) => {
         res.type = type
       },
       setHeader: (res, name, value) => {
