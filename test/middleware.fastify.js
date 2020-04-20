@@ -13,8 +13,8 @@ describe('middleware fastify', () => {
   describe('handling an empty request', () => {
     it('should extend request and response', (done) => {
       const app = fastify()
-      // app.register(i18nextMiddleware.plugin, { i18next })
-      app.addHook('preHandler', i18nextMiddleware.handle(i18next))
+      app.register(i18nextMiddleware.plugin, { i18next })
+      // app.addHook('preHandler', i18nextMiddleware.handle(i18next))
 
       app.get('/', async (req, res) => {
         expect(req).to.have.property('lng', 'en')

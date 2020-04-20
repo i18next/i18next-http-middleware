@@ -13,8 +13,8 @@ describe('addRoute fastify', () => {
   describe('and handling a request', () => {
     it('should return the appropriate resource', (done) => {
       const app = fastify()
-      // app.register(i18nextMiddleware.plugin, { i18next })
-      app.addHook('preHandler', i18nextMiddleware.handle(i18next))
+      app.register(i18nextMiddleware.plugin, { i18next })
+      // app.addHook('preHandler', i18nextMiddleware.handle(i18next))
       const handle = (req, res) => {
         expect(req).to.have.property('lng', 'en')
         expect(req).to.have.property('locale', 'en')

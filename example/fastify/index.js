@@ -24,7 +24,8 @@ i18next
     saveMissing: true
   })
 
-app.addHook('preHandler', i18nextMiddleware.handle(i18next))
+app.register(i18nextMiddleware.plugin, { i18next })
+// app.addHook('preHandler', i18nextMiddleware.handle(i18next))
 
 app.get('/', (req, res) => {
   res.send(req.t('home.title'))

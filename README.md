@@ -58,9 +58,14 @@ i18next.use(middleware.LanguageDetector).init({
 })
 
 var app = fastify()
-app.addHook('preHandler', i18nextMiddleware.handle(i18next, {
-    ignoreRoutes: ['/foo'] // or function(req, res, options, i18next) { /* return true to ignore */ }
-  }))
+app.register(i18nextMiddleware.plugin, {
+  i18next,
+  ignoreRoutes: ['/foo'] // or function(req, res, options, i18next) { /* return true to ignore */ }
+})
+// or
+// app.addHook('preHandler', i18nextMiddleware.handle(i18next, {
+//   ignoreRoutes: ['/foo'] // or function(req, res, options, i18next) { /* return true to ignore */ }
+// }))
 
 // in your request handler
 app.get('myRoute', (request, reply) => {
