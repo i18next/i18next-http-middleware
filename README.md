@@ -46,7 +46,7 @@ app.get('myRoute', (req, res) => {
 div = t('myKey')
 ```
 
-### fastify usage
+### Fastify usage
 ```js
 var i18next = require('i18next')
 var middleware = require('i18next-http-middleware')
@@ -76,6 +76,44 @@ app.get('myRoute', (request, reply) => {
   var exists = request.i18n.exists('myKey')
   var translation = request.t('myKey')
 })
+```
+
+### Deno usage
+
+```js
+import i18next from 'https://deno.land/x/i18next/index.js'
+import Backend from 'https://cdn.jsdelivr.net/gh/i18next/i18next-fs-backend/index.js'
+import i18nextMiddleware from 'https://cdn.jsdelivr.net/gh/i18next/i18next-http-middleware/index.js'
+import { Application } from 'https://deno.land/x/abc/mod.ts'
+import { config } from "https://deno.land/x/dotenv/dotenv.ts";
+
+i18next
+  .use(Backend)
+  .use(i18nextMiddleware.LanguageDetector)
+  .init({
+    // debug: true,
+    backend: {
+      // eslint-disable-next-line no-path-concat
+      loadPath: 'locales/{{lng}}/{{ns}}.json',
+      // eslint-disable-next-line no-path-concat
+      addPath: 'locales/{{lng}}/{{ns}}.missing.json'
+    },
+    fallbackLng: 'en',
+    preload: ['en', 'de'],
+    saveMissing: true
+  })
+
+const port = config.PORT || 8080
+const app = new Application()
+const handle = i18nextMiddleware.handle(i18next)
+app.use((next) =>
+  (c) => {
+    handle(c.request, c.response, () => {})
+    return next(c)
+  }
+)
+app.get('/', (c) => c.request.t('home.title'))
+app.start({ port })
 ```
 
 ## add routes

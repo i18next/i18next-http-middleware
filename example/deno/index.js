@@ -8,7 +8,7 @@ import Backend from 'https://cdn.jsdelivr.net/gh/i18next/i18next-fs-backend/inde
 // import Backend from 'https://raw.githubusercontent.com/i18next/i18next-fs-backend/master/index.js'
 // import Backend from '../../../i18next-fs-backend/lib/index.js'
 
-import Backend from 'https://raw.githubusercontent.com/i18next/i18next-http-middleware/master/index.js'
+import i18nextMiddleware from 'https://raw.githubusercontent.com/i18next/i18next-http-middleware/master/index.js'
 // import i18nextMiddleware from '../../../i18next-http-middleware/index.js'
 
 i18next
