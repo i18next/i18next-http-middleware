@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "express": "4.17.1",
-    "i18next": "19.4.2",
+    "i18next": "19.4.3",
     "i18next-http-middleware": "1.0.0",
-    "i18next-fs-backend": "1.0.0",
+    "i18next-fs-backend": "1.0.1",
     "pug": "2.0.4"
   }
 }

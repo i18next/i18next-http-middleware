@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "express": "4.17.1",
-    "i18next": "19.4.2",
+    "i18next": "19.4.3",
     "i18next-http-middleware": "1.0.0",
     "i18next-locize-backend": "4.0.2"
   }

@@ -83,7 +83,7 @@ app.get('myRoute', (request, reply) => {
 ```js
 import i18next from 'https://deno.land/x/i18next/index.js'
 import Backend from 'https://cdn.jsdelivr.net/gh/i18next/i18next-fs-backend/index.js'
-import i18nextMiddleware from 'https://cdn.jsdelivr.net/gh/i18next/i18next-http-middleware/index.js'
+import i18nextMiddleware from 'https://deno.land/x/i18next_http_middleware/index.js'
 import { Application } from 'https://deno.land/x/abc/mod.ts'
 import { config } from "https://deno.land/x/dotenv/dotenv.ts";
 
