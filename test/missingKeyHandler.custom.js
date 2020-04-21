@@ -20,7 +20,8 @@ describe('missingKeyHandler custom framework', () => {
         p: {
           lng: 'en',
           ns: 'translation'
-        }
+        },
+        body: { miss: 'key' }
       }
       const res = {
         _send: (res, body) => {

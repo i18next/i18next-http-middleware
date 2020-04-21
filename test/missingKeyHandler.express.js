@@ -21,10 +21,11 @@ describe('missingKeyHandler express', () => {
     after((done) => server.close(done))
 
     it('should work', (done) => {
-      app.get('/:lng/:ns', i18nextMiddleware.missingKeyHandler(i18next))
+      app.post('/:lng/:ns', i18nextMiddleware.missingKeyHandler(i18next))
 
       request(app)
-        .get('/en/translation')
+        .post('/en/translation')
+        .send({ miss: 'key' })
         .expect(200, (err, res) => {
           expect(err).not.to.be.ok()
           expect(res.text).to.eql('ok')

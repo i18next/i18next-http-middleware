@@ -34,7 +34,7 @@ const app = new Application()
 const handle = i18nextMiddleware.handle(i18next)
 app.use((next) =>
   (c) => {
-    handle(c.request, c.response, () => {})
+    handle(c)
     return next(c)
   }
 )

@@ -13,11 +13,12 @@ describe('missingKeyHandler fastify', () => {
   describe('handling a request', () => {
     it('should work', (done) => {
       const app = fastify()
-      app.get('/:lng/:ns', i18nextMiddleware.missingKeyHandler(i18next))
+      app.post('/:lng/:ns', i18nextMiddleware.missingKeyHandler(i18next))
 
       app.inject({
-        method: 'GET',
-        url: '/en/translation'
+        method: 'POST',
+        url: '/en/translation',
+        body: { miss: 'key' }
       }, (err, res) => {
         expect(err).not.to.be.ok()
         expect(res.body).to.eql('ok')
