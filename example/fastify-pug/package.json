@@ -1,0 +1,17 @@
+{
+  "name": "i18next-express-basic",
+  "version": "1.0.0",
+  "description": "Node Express server with i18next.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "fastify": "2.13.1",
+    "fastify-pug": "1.2.0",
+    "i18next": "19.4.3",
+    "i18next-fs-backend": "1.0.1",
+    "i18next-http-middleware": "1.0.0"
+  }
+}
