@@ -8,6 +8,9 @@
 
 This is a middleware to be used with Node.js web frameworks like express or Fastify and also for Deno.
 
+It's based on the deprecated [i18next-express-middleware](https://github.com/i18next/i18next-express-middleware) and can be used as a drop-in replacement.
+*It's not bound to a specific http framework anymore.*
+
 # Getting started
 
 ```
