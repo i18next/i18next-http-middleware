@@ -29,6 +29,7 @@ describe('language detector', () => {
       expect(res).to.have.property('h')
       expect(res.h).to.have.property('Set-Cookie')
       expect(res.h['Set-Cookie']).to.match(/i18next=it/)
+      expect(res.h['Set-Cookie']).to.match(/Path=\//)
     })
   })
 
