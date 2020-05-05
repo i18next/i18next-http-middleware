@@ -22,14 +22,19 @@ describe('language detector', () => {
 
     it('cacheUserLanguage', () => {
       const req = {}
-      const res = { h: {} }
-      res.header = (name, value) => { res.h[name] = value }
+      const res = {
+        headers: {
+          'Set-Cookie': 'my=cookie'
+        }
+      }
+      res.header = (name, value) => { res.headers[name] = value }
       ld.cacheUserLanguage(req, res, 'it', ['cookie'])
       expect(req).to.eql({})
-      expect(res).to.have.property('h')
-      expect(res.h).to.have.property('Set-Cookie')
-      expect(res.h['Set-Cookie']).to.match(/i18next=it/)
-      expect(res.h['Set-Cookie']).to.match(/Path=\//)
+      expect(res).to.have.property('headers')
+      expect(res.headers).to.have.property('Set-Cookie')
+      expect(res.headers['Set-Cookie']).to.match(/i18next=it/)
+      expect(res.headers['Set-Cookie']).to.match(/Path=\//)
+      expect(res.headers['Set-Cookie']).to.match(/my=cookie/)
     })
   })
 
