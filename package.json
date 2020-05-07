@@ -17,8 +17,8 @@
   "dependencies": {},
   "devDependencies": {
     "@babel/cli": "7.8.4",
-    "@babel/core": "7.9.0",
-    "@babel/preset-env": "7.9.5",
+    "@babel/core": "7.9.6",
+    "@babel/preset-env": "7.9.6",
     "babel-plugin-add-module-exports": "1.0.2",
     "eslint": "6.8.0",
     "eslint-config-standard": "14.1.1",
@@ -33,7 +33,7 @@
     "i18next": "19.4.4",
     "mocha": "7.1.2",
     "supertest": "4.0.2",
-    "uglify-js": "3.9.1"
+    "uglify-js": "3.9.2"
   },
   "description": "i18next-http-middleware is a middleware to be used with Node.js web frameworks like express or Fastify and also for Deno.",
   "keywords": [
