@@ -5,7 +5,7 @@ import LanguageDetector from '../lib/LanguageDetector.js'
 i18next.init()
 
 describe('language detector', () => {
-  const ld = new LanguageDetector(i18next.services, { order: ['session', 'querystring', 'cookie', 'header'] })
+  const ld = new LanguageDetector(i18next.services, { order: ['session', 'querystring', 'path', 'cookie', 'header'] })
 
   describe('cookie', () => {
     it('detect', () => {
@@ -54,13 +54,12 @@ describe('language detector', () => {
 
   describe('path', () => {
     it('detect', () => {
-      const ld = new LanguageDetector(i18next.services, { order: ['path', 'session', 'querystring', 'cookie', 'header'] })
       const req = {
-        originalUrl: '/de/some/route'
+        url: '/fr/some/route'
       }
       const res = {}
       const lng = ld.detect(req, res)
-      expect(lng).to.eql('de')
+      expect(lng).to.eql('fr')
       expect(res).to.eql({})
     })
   })
