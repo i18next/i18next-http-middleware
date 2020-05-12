@@ -85,6 +85,8 @@ app.get('myRoute', (request, reply) => {
 
 ### Deno usage
 
+#### abc
+
 ```js
 import i18next from 'https://deno.land/x/i18next/index.js'
 import Backend from 'https://cdn.jsdelivr.net/gh/i18next/i18next-fs-backend/index.js'
@@ -104,8 +106,7 @@ i18next
       addPath: 'locales/{{lng}}/{{ns}}.missing.json'
     },
     fallbackLng: 'en',
-    preload: ['en', 'de'],
-    saveMissing: true
+    preload: ['en', 'de']
   })
 
 const port = config.PORT || 8080
@@ -118,7 +119,46 @@ app.use((next) =>
   }
 )
 app.get('/', (c) => c.request.t('home.title'))
-app.start({ port })
+await app.start({ port })
+```
+
+#### ServestJS
+
+```js
+import i18next from 'https://deno.land/x/i18next/index.js'
+import Backend from 'https://cdn.jsdelivr.net/gh/i18next/i18next-fs-backend/index.js'
+import i18nextMiddleware from 'https://deno.land/x/i18next_http_middleware/index.js'
+import { createApp } from 'https://servestjs.org/@v1.0.0-rc2/mod.ts'
+import { config } from "https://deno.land/x/dotenv/dotenv.ts";
+
+i18next
+  .use(Backend)
+  .use(i18nextMiddleware.LanguageDetector)
+  .init({
+    // debug: true,
+    backend: {
+      // eslint-disable-next-line no-path-concat
+      loadPath: 'locales/{{lng}}/{{ns}}.json',
+      // eslint-disable-next-line no-path-concat
+      addPath: 'locales/{{lng}}/{{ns}}.missing.json'
+    },
+    fallbackLng: 'en',
+    preload: ['en', 'de']
+  })
+
+const port = config.PORT || 8080
+const app = createApp()
+app.use(i18nextMiddleware.handle(i18next))
+app.get('/', async (req) => {
+  await req.respond({
+    status: 200,
+    headers: new Headers({
+      'content-type': 'text/plain',
+    }),
+    body: req.t('home.title')
+  })
+})
+await app.listen({ port })
 ```
 
 ## add routes
