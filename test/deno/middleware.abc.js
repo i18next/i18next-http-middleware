@@ -4,7 +4,7 @@ import { Application } from 'https://deno.land/x/abc/mod.ts'
 import i18nextMiddleware from '../../index.js'
 const { test } = Deno
 
-test('missingKeyHandler abc', async () => {
+test('middleware abc', async () => {
   // before
   i18next.init({
     fallbackLng: 'en',
