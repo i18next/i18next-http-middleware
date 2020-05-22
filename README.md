@@ -299,6 +299,7 @@ As with all modules you can either pass the constructor function (class) to the 
   cookieExpirationDate: new Date(),
   cookieDomain: 'myDomain',
   cookieSecure: true, // if need secure cookie
+  cookieSameSite: 'strict', // 'strict', 'lax' or 'none'
 
   // only detect languages that are in the whitelist
   checkWhitelist: true,
