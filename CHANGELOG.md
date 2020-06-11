@@ -1,3 +1,6 @@
+## [v2.1.2](https://github.com/i18next/i18next-http-middleware/compare/v2.1.1...v2.1.2)
+- fix: get whitelist from correct property
+
 ## [v2.1.1](https://github.com/i18next/i18next-http-middleware/compare/v2.1.0...v2.1.1)
 - extend httpFunctions getQuery to handle some edge cases
 
