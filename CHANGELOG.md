@@ -1,3 +1,7 @@
+## [v3.0.0](https://github.com/i18next/i18next-http-middleware/compare/v2.1.2...v3.0.0)
+- **BREAKING** needs i18next >= 19.5.0
+- let i18next figure out which detected lng is best match
+
 ## [v2.1.2](https://github.com/i18next/i18next-http-middleware/compare/v2.1.1...v2.1.2)
 - fix: get whitelist from correct property
 

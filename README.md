@@ -300,17 +300,7 @@ As with all modules you can either pass the constructor function (class) to the 
   cookieDomain: 'myDomain',
   cookiePath: '/my/path',
   cookieSecure: true, // if need secure cookie
-  cookieSameSite: 'strict', // 'strict', 'lax' or 'none'
-
-  // only detect languages that are in the whitelist
-  checkWhitelist: true,
-
-  // fallback to a similar whitelist language
-  // Example 1: Browser language is 'es'
-  // if 'es' is not found in whitelist, first fallback to any whitelist language that starts with 'es-', then fallback to fallbackLng ('es' -> 'es-*' -> fallbackLng)
-  // Example 2: Browser language is 'es-MX'
-  // if 'es-MX' is not found in whitelist, first fallback to 'es', then fallback to 'es-*', then fallback to fallbackLng ('es-MX' -> 'es' -> 'es-*' -> fallbackLng)
-  checkForSimilarInWhitelist: false
+  cookieSameSite: 'strict' // 'strict', 'lax' or 'none'
 }
 ```
 
