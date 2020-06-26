@@ -50,6 +50,19 @@ describe('language detector', () => {
       expect(lng).to.eql('de')
       // expect(res).to.eql({})
     })
+
+    it('detect with custom regex', () => {
+      const req = {
+        headers: {
+          'accept-language': 'zh-Hans'
+        }
+      }
+      const res = {}
+      const ldCustom = new LanguageDetector(i18next.services, { order: ['header'], lookupHeaderRegex: /(([a-z]{4})-?([A-Z]{2})?)\s*;?\s*(q=([0-9.]+))?/gi })
+      const lng = ldCustom.detect(req, res)
+      expect(lng).to.eql('Hans')
+      // expect(res).to.eql({})
+    })
   })
 
   describe('path', () => {
