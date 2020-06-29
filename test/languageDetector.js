@@ -51,6 +51,18 @@ describe('language detector', () => {
       // expect(res).to.eql({})
     })
 
+    it('detect special', () => {
+      const req = {
+        headers: {
+          'accept-language': 'zh-Hans'
+        }
+      }
+      const res = {}
+      const lng = ld.detect(req, res)
+      expect(lng).to.eql('zh-Hans')
+      // expect(res).to.eql({})
+    })
+
     it('detect with custom regex', () => {
       const req = {
         headers: {
