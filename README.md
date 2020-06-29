@@ -288,6 +288,7 @@ As with all modules you can either pass the constructor function (class) to the 
   lookupQuerystring: 'lng',
   lookupCookie: 'i18next',
   lookupHeader: 'accept-language',
+  lookupHeaderRegex: /(([a-z]{2})-?([A-Z]{2})?)\s*;?\s*(q=([0-9.]+))?/gi,
   lookupSession: 'lng',
   lookupPath: 'lng',
   lookupFromPathIndex: 0,
