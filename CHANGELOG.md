@@ -1,3 +1,6 @@
+## [v3.0.2](https://github.com/i18next/i18next-http-middleware/compare/v3.0.1...v3.0.2)
+- transpile also esm
+
 ## [v3.0.1](https://github.com/i18next/i18next-http-middleware/compare/v3.0.0...v3.0.1)
 - introduce lookupHeaderRegex option
 

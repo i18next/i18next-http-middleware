@@ -1,6 +1,7 @@
 /build
 /node_modules
 /cjs
+/esm
 /dist
 /example
 /test/deno

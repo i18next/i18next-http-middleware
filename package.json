@@ -8,18 +8,21 @@
     "./package.json": "./package.json",
     ".": {
       "require": "./cjs/index.js",
-      "default": "./lib/index.js"
+      "default": "./esm/index.js"
     },
     "./cjs": {
       "default": "./cjs/index.js"
+    },
+    "./esm": {
+      "default": "./esm/index.js"
     }
   },
-  "module": "./lib/index.js",
+  "module": "./esm/index.js",
   "dependencies": {},
   "devDependencies": {
-    "@babel/cli": "7.10.3",
-    "@babel/core": "7.10.3",
-    "@babel/preset-env": "7.10.3",
+    "@babel/cli": "7.10.4",
+    "@babel/core": "7.10.4",
+    "@babel/preset-env": "7.10.4",
     "babel-plugin-add-module-exports": "1.0.2",
     "eslint": "7.3.1",
     "eslint-config-standard": "14.1.1",
@@ -31,7 +34,7 @@
     "expect.js": "0.3.1",
     "express": "4.17.1",
     "fastify": "3.0.0-rc.1",
-    "i18next": "19.5.1",
+    "i18next": "19.5.2",
     "mocha": "8.0.1",
     "supertest": "4.0.2",
     "uglify-js": "3.10.0"
@@ -59,7 +62,9 @@
   ],
   "scripts": {
     "lint": "eslint .",
-    "compile": "rm -rf cjs && mkdir cjs && babel lib -d cjs --presets=@babel/preset-env --plugins=add-module-exports && echo '{\"type\":\"commonjs\"}' > cjs/package.json",
+    "compile:esm": "rm -rf esm && mkdir esm && BABEL_ENV=esm babel lib -d esm",
+    "compile:cjs": "rm -rf cjs && mkdir cjs && BABEL_ENV=cjs babel lib -d cjs && echo '{\"type\":\"commonjs\"}' > cjs/package.json",
+    "compile": "npm run compile:esm && npm run compile:cjs",
     "build": "npm run compile",
     "test": "npm run lint && npm run build && mocha test -R spec --exit --experimental-modules",
     "test:deno": "deno test test/deno/*.js --allow-net",
