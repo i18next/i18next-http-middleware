@@ -13,7 +13,7 @@ It's based on the deprecated [i18next-express-middleware](https://github.com/i18
 
 # Getting started
 
-```
+```bash
 # npm package
 $ npm install i18next-http-middleware
 ```
