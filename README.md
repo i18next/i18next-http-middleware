@@ -83,7 +83,7 @@ app.get('myRoute', (request, reply) => {
 })
 ```
 
-### Demo usage
+### Deno usage
 
 #### abc
 
