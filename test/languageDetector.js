@@ -20,6 +20,17 @@ describe('language detector', () => {
       // expect(res).to.eql({})
     })
 
+    it.only('shouldn\'t fail on URI malformed from cookie content', () => {
+      const req = {
+        headers: {
+          cookie: 'i18next=%'
+        }
+      }
+      const res = {}
+      const lng = ld.detect(req, res)
+      expect(lng).to.eql('%')
+    })
+
     it('cacheUserLanguage', () => {
       const req = {}
       const res = {
