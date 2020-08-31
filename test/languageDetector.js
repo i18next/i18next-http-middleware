@@ -19,7 +19,7 @@ describe('language detector', () => {
       expect(lng).to.eql('de')
       // expect(res).to.eql({})
     })
-    
+
     it.only('shouldn\'t fail on URI malformed from cookie content', () => {
       const req = {
         headers: {
