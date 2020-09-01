@@ -1,3 +1,6 @@
+## [v3.0.4](https://github.com/i18next/i18next-http-middleware/compare/v3.0.3...v3.0.4)
+- fix language detection algorithm to handle fallbackLng correctly
+
 ## [v3.0.3](https://github.com/i18next/i18next-http-middleware/compare/v3.0.2...v3.0.3)
 - prevent URIError with cookie language detector
 
