@@ -1,3 +1,6 @@
+## [v3.0.5](https://github.com/i18next/i18next-http-middleware/compare/v3.0.4...v3.0.5)
+- introduce ignoreCase option
+
 ## [v3.0.4](https://github.com/i18next/i18next-http-middleware/compare/v3.0.3...v3.0.4)
 - fix language detection algorithm to handle fallbackLng correctly
 

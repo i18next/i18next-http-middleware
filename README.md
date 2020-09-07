@@ -296,6 +296,8 @@ As with all modules you can either pass the constructor function (class) to the 
   // cache user language
   caches: false, // ['cookie']
 
+  ignoreCase: false, // ignore case of detected language
+
   // optional expire and domain for set cookie
   cookieExpirationDate: new Date(),
   cookieDomain: 'myDomain',
