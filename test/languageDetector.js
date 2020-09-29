@@ -5,7 +5,7 @@ import LanguageDetector from '../lib/LanguageDetector.js'
 i18next.init()
 
 describe('language detector', () => {
-  const ld = new LanguageDetector(i18next.services, { order: ['session', 'querystring', 'path', 'cookie', 'header'], cookieSameSite: 'none', ignoreCase: true })
+  const ld = new LanguageDetector(i18next.services, { order: ['session', 'querystring', 'path', 'cookie', 'header'], cookieSameSite: 'none' })
 
   describe('cookie', () => {
     it('detect', () => {

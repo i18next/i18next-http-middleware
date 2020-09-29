@@ -1,3 +1,6 @@
+## [v3.0.6](https://github.com/i18next/i18next-http-middleware/compare/v3.0.5...v3.0.6)
+- ignoreCase option true by default
+
 ## [v3.0.5](https://github.com/i18next/i18next-http-middleware/compare/v3.0.4...v3.0.5)
 - introduce ignoreCase option
 
