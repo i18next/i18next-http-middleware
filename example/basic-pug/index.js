@@ -1,15 +1,27 @@
 const express = require('express')
 const i18next = require('i18next')
 const i18nextMiddleware = require('i18next-http-middleware')
-const Backend = require('i18next-fs-backend')
+const i18nextBackend = require('i18next-fs-backend')
 
 const app = express()
+
+app.set('view engine', 'pug');
+app.set('view options', { pretty: true });
+app.disable('x-powered-by');
+app.set('trust proxy', true);
+app.locals = { config: { whatever: 'this is' } };
+
 const port = process.env.PORT || 8080
 
 i18next
-  .use(Backend)
+  .use(i18nextBackend)
   .use(i18nextMiddleware.LanguageDetector)
   .init({
+    debug: true,
+    lng: 'en',
+    fallbackLng: 'en',
+    preload: ['de', 'en'],
+    saveMissing: true,
     backend: {
       // eslint-disable-next-line no-path-concat
       loadPath: __dirname + '/locales/{{lng}}/{{ns}}.json',
@@ -18,14 +30,13 @@ i18next
     },
     detection: {
       order: ['querystring', 'cookie'],
-      caches: ['cookie']
-    },
-    fallbackLng: 'en',
-    preload: ['en', 'de'],
-    saveMissing: true
+      caches: ['cookie'],
+      lookupQuerystring: 'locale',
+      lookupCookie: 'locale',
+      ignoreCase: true,
+      cookieSecure: false
+    }
   })
-
-app.set('view engine', 'pug')
 app.use(i18nextMiddleware.handle(i18next))
 
 app.get('/', (req, res) => {
