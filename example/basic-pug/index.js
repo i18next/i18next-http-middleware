@@ -18,7 +18,6 @@ i18next
   .use(i18nextMiddleware.LanguageDetector)
   .init({
     debug: true,
-    lng: 'en',
     fallbackLng: 'en',
     preload: ['de', 'en'],
     saveMissing: true,
