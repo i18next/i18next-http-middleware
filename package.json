@@ -4,6 +4,7 @@
   "private": false,
   "type": "module",
   "main": "./cjs/index.js",
+  "types": "./index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
