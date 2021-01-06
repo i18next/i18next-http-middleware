@@ -20,16 +20,26 @@ i18next
       addPath: __dirname + '/locales/{{lng}}/{{ns}}.missing.json'
     },
     fallbackLng: 'en',
-    preload: ['en', 'de'],
+    // nonExplicitSupportedLngs: true,
+    // supportedLngs: ['en', 'de'],
+    load: 'languageOnly',
     saveMissing: true
   })
 
 app.use(i18nextMiddleware.handle(i18next))
 
 app.get('/', (req, res) => {
-  res.send(req.t('home.title'))
+  res.send(JSON.stringify({
+    'req.language': req.language,
+    'req.i18n.language': req.i18n.language,
+    'req.i18n.languages': req.i18n.languages,
+    'req.i18n.languages[0]': req.i18n.languages[0],
+    'req.t("home.title")': req.t('home.title')
+  }, null, 2))
 })
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`)
 })
+
+// curl localhost:8080 -H 'Accept-Language: de-de'
