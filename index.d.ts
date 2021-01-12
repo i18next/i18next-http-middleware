@@ -1,8 +1,18 @@
-import * as express from "express";
+import {
+  Application,
+  Handler,
+  NextFunction,
+  Request,
+  RequestHandler,
+  Response,
+  Router,
+} from "express-serve-static-core";
 import * as i18next from "i18next";
 
+/// <reference types="express-serve-static-core" />
+
 type I18next = i18next.i18n;
-type App = express.Application | express.Router;
+type App = Application | Router;
 
 type I18NextRequest = {
   language: string;
@@ -18,21 +28,21 @@ declare global {
 }
 
 interface ExtendedOptions extends Object {
-  getPath?: (req: express.Request) => string;
-  getOriginalUrl?: (req: express.Request) => string;
-  getUrl?: (req: express.Request) => string;
-  setUrl?: (req: express.Request, url: string) => void;
-  getParams?: (req: express.Request) => Object;
-  getSession?: (req: express.Request) => Object;
-  getQuery?: (req: express.Request) => Object;
-  getCookies?: (req: express.Request) => Object;
-  getBody?: (req: express.Request) => Object;
-  getHeaders?: (req: express.Request) => Object;
-  getHeader?: (res: express.Response, name: string) => Object;
-  setHeader?: (res: express.Response, name: string, value: string) => void;
-  setContentType?: (res: express.Response, type: string) => void;
-  setStatus?: (res: express.Response, code: number) => void;
-  send?: (res: express.Response, body: any) => void;
+  getPath?: (req: Request) => string;
+  getOriginalUrl?: (req: Request) => string;
+  getUrl?: (req: Request) => string;
+  setUrl?: (req: Request, url: string) => void;
+  getParams?: (req: Request) => Object;
+  getSession?: (req: Request) => Object;
+  getQuery?: (req: Request) => Object;
+  getCookies?: (req: Request) => Object;
+  getBody?: (req: Request) => Object;
+  getHeaders?: (req: Request) => Object;
+  getHeader?: (res: Response, name: string) => Object;
+  setHeader?: (res: Response, name: string, value: string) => void;
+  setContentType?: (res: Response, type: string) => void;
+  setStatus?: (res: Response, code: number) => void;
+  send?: (res: Response, body: any) => void;
 }
 
 interface HandleOptions extends ExtendedOptions {
@@ -53,32 +63,29 @@ interface MissingKeyHandlerOptions extends ExtendedOptions {
 }
 
 type IgnoreRoutesFunction = (
-  req: express.Request,
-  res: express.Response,
+  req: Request,
+  res: Response,
   options: HandleOptions,
   i18next: I18next
 ) => boolean;
 
-export function handle(
-  i18next: I18next,
-  options?: HandleOptions
-): express.Handler;
+export function handle(i18next: I18next, options?: HandleOptions): Handler;
 
 export function plugin(
   instance: any,
   options: HandleOptions & { i18next?: I18next },
-  next: express.NextFunction
-): express.Handler;
+  next: NextFunction
+): Handler;
 
 export function getResourcesHandler(
   i18next: I18next,
   options?: GetResourcesHandlerOptions
-): express.Handler;
+): Handler;
 
 export function missingKeyHandler(
   i18next: I18next,
   options?: MissingKeyHandlerOptions
-): express.Handler;
+): Handler;
 
 export function addRoute(
   i18next: I18next,
@@ -86,7 +93,7 @@ export function addRoute(
   lngs: string[],
   app: App,
   verb: string,
-  fc: express.RequestHandler
+  fc: RequestHandler
 ): void;
 
 // LanguageDetector
@@ -113,14 +120,14 @@ interface LanguageDetectorInterface {
   name: string;
 
   lookup: (
-    req: express.Request,
-    res: express.Response,
+    req: Request,
+    res: Response,
     options?: LanguageDetectorInterfaceOptions
   ) => string | string[];
 
   cacheUserLanguage?: (
-    req: express.Request,
-    res: express.Response,
+    req: Request,
+    res: Response,
     lng: string,
     options?: Object
   ) => void;
@@ -154,14 +161,14 @@ export class LanguageDetector implements i18next.Module {
   addDetector(detector: LanguageDetectorInterface): void;
 
   detect(
-    req: express.Request,
-    res: express.Response,
+    req: Request,
+    res: Response,
     detectionOrder: LanguageDetectorOrder
   ): void;
 
   cacheUserLanguage(
-    req: express.Request,
-    res: express.Response,
+    req: Request,
+    res: Response,
     lng: string,
     caches: LanguageDetectorCaches
   ): void;
