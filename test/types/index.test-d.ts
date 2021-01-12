@@ -7,21 +7,26 @@ import {
   LanguageDetector,
 } from "../../index";
 import { expectType } from "tsd";
-import express from "express";
+import {
+  Handler,
+  Application,
+  Request,
+  Response,
+} from "express-serve-static-core";
 import i18next from "i18next";
 
 const noop = () => {};
 
-expectType<express.Handler>(handle(i18next));
+expectType<Handler>(handle(i18next));
 
-expectType<express.Handler>(plugin({}, { i18next: i18next }, noop));
+expectType<Handler>(plugin({}, { i18next: i18next }, noop));
 
-expectType<express.Handler>(getResourcesHandler(i18next));
+expectType<Handler>(getResourcesHandler(i18next));
 
-expectType<express.Handler>(missingKeyHandler(i18next));
+expectType<Handler>(missingKeyHandler(i18next));
 
 expectType<void>(
-  addRoute(i18next, "/path", ["en"], express.application, "get", noop)
+  addRoute(i18next, "/path", ["en"], <Application>{}, "get", noop)
 );
 
 const languageDetector = new LanguageDetector();
@@ -36,15 +41,8 @@ expectType<void>(
   })
 );
 
-expectType<void>(
-  languageDetector.detect(<express.Request>{}, <express.Response>{}, ["en"])
-);
+expectType<void>(languageDetector.detect(<Request>{}, <Response>{}, ["en"]));
 
 expectType<void>(
-  languageDetector.cacheUserLanguage(
-    <express.Request>{},
-    <express.Response>{},
-    "en",
-    true
-  )
+  languageDetector.cacheUserLanguage(<Request>{}, <Response>{}, "en", true)
 );
