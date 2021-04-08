@@ -1,3 +1,6 @@
+## [v3.1.1](https://github.com/i18next/i18next-http-middleware/compare/v3.1.0...v3.1.1)
+- make sure no undefined language is detected
+
 ## [v3.1.0](https://github.com/i18next/i18next-http-middleware/compare/v3.0.6...v3.1.0)
 - added types
 
