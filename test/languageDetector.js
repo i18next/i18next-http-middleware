@@ -8,26 +8,26 @@ describe('language detector', () => {
   const ld = new LanguageDetector(i18next.services, { order: ['session', 'querystring', 'path', 'cookie', 'header'], cookieSameSite: 'none' })
 
   describe('cookie', () => {
-    it('detect', () => {
+    it('detect', async () => {
       const req = {
         headers: {
           cookie: 'i18next=de'
         }
       }
       const res = {}
-      const lng = ld.detect(req, res)
+      const lng = await ld.detect(req, res)
       expect(lng).to.eql('de')
       // expect(res).to.eql({})
     })
 
-    it('shouldn\'t fail on URI malformed from cookie content', () => {
+    it('shouldn\'t fail on URI malformed from cookie content', async () => {
       const req = {
         headers: {
           cookie: 'i18next=%'
         }
       }
       const res = {}
-      const lng = ld.detect(req, res)
+      const lng = await ld.detect(req, res)
       expect(lng).to.eql('%')
     })
 
@@ -51,31 +51,31 @@ describe('language detector', () => {
   })
 
   describe('header', () => {
-    it('detect', () => {
+    it('detect', async () => {
       const req = {
         headers: {
           'accept-language': 'de'
         }
       }
       const res = {}
-      const lng = ld.detect(req, res)
+      const lng = await ld.detect(req, res)
       expect(lng).to.eql('de')
       // expect(res).to.eql({})
     })
 
-    it('detect special', () => {
+    it('detect special', async () => {
       const req = {
         headers: {
           'accept-language': 'zh-Hans'
         }
       }
       const res = {}
-      const lng = ld.detect(req, res)
+      const lng = await ld.detect(req, res)
       expect(lng).to.eql('zh-Hans')
       // expect(res).to.eql({})
     })
 
-    it('detect with custom regex', () => {
+    it('detect with custom regex', async () => {
       const req = {
         headers: {
           'accept-language': 'zh-Hans'
@@ -83,45 +83,45 @@ describe('language detector', () => {
       }
       const res = {}
       const ldCustom = new LanguageDetector(i18next.services, { order: ['header'], lookupHeaderRegex: /(([a-z]{4})-?([A-Z]{2})?)\s*;?\s*(q=([0-9.]+))?/gi })
-      const lng = ldCustom.detect(req, res)
+      const lng = await ldCustom.detect(req, res)
       expect(lng).to.eql('Hans')
       // expect(res).to.eql({})
     })
   })
 
   describe('path', () => {
-    it('detect', () => {
+    it('detect', async () => {
       const req = {
         url: '/fr-fr/some/route'
       }
       const res = {}
-      const lng = ld.detect(req, res)
+      const lng = await ld.detect(req, res)
       expect(lng).to.eql('fr-FR')
       // expect(res).to.eql({})
     })
   })
 
   describe('querystring', () => {
-    it('detect', () => {
+    it('detect', async () => {
       const req = {
         url: '/fr/some/route?lng=de'
       }
       const res = {}
-      const lng = ld.detect(req, res)
+      const lng = await ld.detect(req, res)
       expect(lng).to.eql('de')
       // expect(res).to.eql({})
     })
   })
 
   describe('session', () => {
-    it('detect', () => {
+    it('detect', async () => {
       const req = {
         session: {
           lng: 'de'
         }
       }
       const res = {}
-      const lng = ld.detect(req, res)
+      const lng = await ld.detect(req, res)
       expect(lng).to.eql('de')
       // expect(res).to.eql({})
     })
