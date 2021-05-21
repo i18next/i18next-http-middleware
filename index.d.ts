@@ -123,7 +123,7 @@ interface LanguageDetectorInterface {
     req: Request,
     res: Response,
     options?: LanguageDetectorInterfaceOptions
-  ) => string | string[];
+  ) => string | string[] | undefined;
 
   cacheUserLanguage?: (
     req: Request,
