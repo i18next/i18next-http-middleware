@@ -1,3 +1,6 @@
+## [v3.1.3](https://github.com/i18next/i18next-http-middleware/compare/v3.1.2...v3.1.3)
+- optimize getQuery() function to check if req.query is iterable
+
 ## [v3.1.2](https://github.com/i18next/i18next-http-middleware/compare/v3.1.1...v3.1.2)
 - fix the type of the lookup method [#37](https://github.com/i18next/i18next-http-middleware/pull/37)
 
