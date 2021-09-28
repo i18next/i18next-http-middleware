@@ -27,8 +27,16 @@ i18next
 app.register(i18nextMiddleware.plugin, { i18next })
 // app.addHook('preHandler', i18nextMiddleware.handle(i18next))
 
+app.setErrorHandler(function (error, request, reply) {
+  reply.send(request.t('error'))
+})
+
 app.get('/', (req, res) => {
   res.send(req.t('home.title'))
+})
+
+app.get('/err', (req, res) => {
+  throw 'some err'
 })
 
 app.listen(port, () => {

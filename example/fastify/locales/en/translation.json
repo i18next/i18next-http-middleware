@@ -1,5 +1,6 @@
 {
   "home": {
     "title": "Hello World!"
-  }
+  },
+  "error": "there was some error"
 }
