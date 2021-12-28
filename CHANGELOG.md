@@ -1,3 +1,6 @@
+## [v3.1.5](https://github.com/i18next/i18next-http-middleware/compare/v3.1.4...v3.1.5)
+- fallbackLng option can also be a function
+
 ## [v3.1.4](https://github.com/i18next/i18next-http-middleware/compare/v3.1.3...v3.1.4)
 - fix for [point-of-view](https://github.com/fastify/point-of-view)
 - update all dependencies
