@@ -169,6 +169,10 @@ app.post('/locales/add/:lng/:ns', middleware.missingKeyHandler(i18next))
 
 // multiload backend route
 app.get('/locales/resources.json', middleware.getResourcesHandler(i18next))
+// can be used like:
+// GET /locales/resources.json
+// GET /locales/resources.json?lng=en
+// GET /locales/resources.json?lng=en&ns=translation
 ```
 
 ## add localized routes
