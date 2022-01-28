@@ -1,12 +1,12 @@
 <html>
 
   <head>
-      <title>i18next - fastify with pug</title>
+      <title>i18next - abc with dejs</title>
   </head>
 
   <body>
       <h1><%= t('home.title') %></h1>
-      <div><a href="/?lng=en">english</a>&nbsp; | &nbsp;<a href="/?lng=de">deutsch</a></div>
+      <div><a href="/?lng=en">english</a>&nbsp; | &nbsp;<a href="/?lng=de">deutsch</a> | &nbsp;<a href="/?lng=it">italiano</a></div>
       <hr />
       <div><a href=<%= "/raw?lng=" + i18n.resolvedLanguage %>>raw test</a></div>
   </body>

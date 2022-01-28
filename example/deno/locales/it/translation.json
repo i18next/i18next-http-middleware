@@ -1,0 +1,8 @@
+{
+  "home": {
+    "title": "Ciao Mondo!"
+  },
+  "server": {
+    "started": "Il server sta aspettando sul port {{port}}."
+  }
+}
