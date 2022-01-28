@@ -1,5 +1,8 @@
 {
   "home": {
     "title": "Hello World!"
+  },
+  "server": {
+    "started": "Server is listening on port {{port}}."
   }
 }
