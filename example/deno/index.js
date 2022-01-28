@@ -29,3 +29,4 @@ app.start({ port })
 
 console.log(i18n.t('server.started', { port }))
 console.log(i18n.t('server.started', { port, lng: 'de' }))
+console.log(i18n.t('server.started', { port, lng: 'it' }))
