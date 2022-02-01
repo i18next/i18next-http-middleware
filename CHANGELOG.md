@@ -1,3 +1,6 @@
+## [v3.1.6](https://github.com/i18next/i18next-http-middleware/compare/v3.1.5...v3.1.6)
+- add Fastify type support [#47](https://github.com/i18next/i18next-http-middleware/pull/47)
+
 ## [v3.1.5](https://github.com/i18next/i18next-http-middleware/compare/v3.1.4...v3.1.5)
 - fallbackLng option can also be a function
 
