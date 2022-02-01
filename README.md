@@ -11,6 +11,11 @@ This is a middleware to be used with Node.js web frameworks like express or Fast
 It's based on the deprecated [i18next-express-middleware](https://github.com/i18next/i18next-express-middleware) and can be used as a drop-in replacement.
 *It's not bound to a specific http framework anymore.*
 
+
+## Advice:
+
+To get started with server side internationalization, you may also have a look at [this blog post](https://dev.to/adrai/how-does-server-side-internationalization-i18n-look-like-5f4c) also using [using i18next-http-middleware](https://dev.to/adrai/how-does-server-side-internationalization-i18n-look-like-5f4c#ssr).
+
 # Getting started
 
 ```bash
