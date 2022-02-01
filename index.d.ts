@@ -27,6 +27,10 @@ declare global {
   }
 }
 
+declare module 'fastify' {
+  interface FastifyRequest extends I18NextRequest {}
+}
+
 interface ExtendedOptions extends Object {
   getPath?: (req: Request) => string;
   getOriginalUrl?: (req: Request) => string;
