@@ -275,6 +275,8 @@ Detects user language from current request. Comes with support for:
 - querystring
 - session
 
+Based on the i18next language detection handling: https://www.i18next.com/misc/creating-own-plugins#languagedetector
+
 Wiring up:
 
 ```js
@@ -302,7 +304,7 @@ As with all modules you can either pass the constructor function (class) to the 
   lookupPath: 'lng',
   lookupFromPathIndex: 0,
 
-  // cache user language
+  // cache user language, you can define if an how the detected language should be "saved" => 'cookie' and/or 'session'
   caches: false, // ['cookie']
 
   ignoreCase: true, // ignore case of detected language
