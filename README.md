@@ -88,6 +88,42 @@ app.get('myRoute', (request, reply) => {
 })
 ```
 
+### Hapi usage
+```js
+const i18next = require('i18next')
+const middleware = require('i18next-http-middleware')
+const Hapi = require('@hapi/hapi')
+
+i18next.use(middleware.LanguageDetector).init({
+  preload: ['en', 'de', 'it'],
+  ...otherOptions
+})
+
+const server = Hapi.server({
+  port: port,
+  host: '0.0.0.0',
+  
+var app = fastify()
+app.register(i18nextMiddleware.plugin, {
+  i18next,
+  ignoreRoutes: ['/foo'] // or function(req, res, options, i18next) { /* return true to ignore */ }
+})
+// or
+// app.addHook('preHandler', i18nextMiddleware.handle(i18next, {
+//   ignoreRoutes: ['/foo'] // or function(req, res, options, i18next) { /* return true to ignore */ }
+// }))
+
+// in your request handler
+app.get('myRoute', (request, reply) => {
+  var lng = request.language // 'de-CH'
+  var lngs = v.languages // ['de-CH', 'de', 'en']
+  request.i18n.changeLanguage('en') // will not load that!!! assert it was preloaded
+
+  var exists = request.i18n.exists('myKey')
+  var translation = request.t('myKey')
+})
+```
+
 ### Deno usage
 
 #### abc
