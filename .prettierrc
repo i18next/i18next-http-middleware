@@ -5,6 +5,6 @@
   "new-cap": false,
   "singleQuote": true,
   "tabWidth": 2,
-  "trailingComma": "es5",
+  "trailingComma": "none",
   "printWidth": 80
 }
