@@ -2,8 +2,13 @@ name: node
 
 on:
   push:
-    branches:
-      - master
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
 
 jobs:
   test:
@@ -11,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: [ '14.x', '12.x' ]
+        node: [ '16.x', '14.x', '12.x' ]
         # os: [ubuntu-latest, windows-latest, macOS-latest]
         os: [ubuntu-latest]
     steps:
