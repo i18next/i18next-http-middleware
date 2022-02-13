@@ -5,12 +5,10 @@
 [![Travis](https://img.shields.io/travis/i18next/i18next-http-middleware/master.svg?style=flat-square)](https://travis-ci.org/i18next/i18next-http-middleware)
 [![npm version](https://img.shields.io/npm/v/i18next-http-middleware.svg?style=flat-square)](https://www.npmjs.com/package/i18next-http-middleware)
 
-
 This is a middleware to be used with Node.js web frameworks like express or Fastify and also for Deno.
 
 It's based on the deprecated [i18next-express-middleware](https://github.com/i18next/i18next-express-middleware) and can be used as a drop-in replacement.
-*It's not bound to a specific http framework anymore.*
-
+_It's not bound to a specific http framework anymore._
 
 ## Advice:
 
@@ -57,6 +55,7 @@ div = t('myKey')
 ```
 
 ### Fastify usage
+
 ```js
 var i18next = require('i18next')
 var middleware = require('i18next-http-middleware')
@@ -89,6 +88,7 @@ app.get('myRoute', (request, reply) => {
 ```
 
 ### Hapi usage
+
 ```js
 const i18next = require('i18next')
 const middleware = require('i18next-http-middleware')
@@ -102,26 +102,31 @@ i18next.use(middleware.LanguageDetector).init({
 const server = Hapi.server({
   port: port,
   host: '0.0.0.0',
-  
-var app = fastify()
-app.register(i18nextMiddleware.plugin, {
-  i18next,
-  ignoreRoutes: ['/foo'] // or function(req, res, options, i18next) { /* return true to ignore */ }
+
+const app = fastify()
+
+await app.register({
+  plugin: i18nextMiddleware.hapiPlugin,
+  options: {
+    i18next,
+    ignoreRoutes: ['/foo'] // or function(req, res, options, i18next) { /* return true to ignore
+  }
 })
-// or
-// app.addHook('preHandler', i18nextMiddleware.handle(i18next, {
-//   ignoreRoutes: ['/foo'] // or function(req, res, options, i18next) { /* return true to ignore */ }
-// }))
 
 // in your request handler
-app.get('myRoute', (request, reply) => {
-  var lng = request.language // 'de-CH'
-  var lngs = v.languages // ['de-CH', 'de', 'en']
-  request.i18n.changeLanguage('en') // will not load that!!! assert it was preloaded
+app.route({
+  method: 'GET',
+  path: '/myRoute',
+  handler: (request, h) => {
+    var lng = request.language // 'de-CH'
+    var lngs = v.languages // ['de-CH', 'de', 'en']
+    request.i18n.changeLanguage('en') // will not load that!!! assert it was preloaded
 
-  var exists = request.i18n.exists('myKey')
-  var translation = request.t('myKey')
+    var exists = request.i18n.exists('myKey')
+    var translation = request.t('myKey')
+  }
 })
+
 ```
 
 ### Deno usage
@@ -133,7 +138,7 @@ import i18next from 'https://deno.land/x/i18next/index.js'
 import Backend from 'https://cdn.jsdelivr.net/gh/i18next/i18next-fs-backend/index.js'
 import i18nextMiddleware from 'https://deno.land/x/i18next_http_middleware/index.js'
 import { Application } from 'https://deno.land/x/abc/mod.ts'
-import { config } from "https://deno.land/x/dotenv/dotenv.ts";
+import { config } from 'https://deno.land/x/dotenv/dotenv.ts'
 
 i18next
   .use(Backend)
@@ -153,12 +158,10 @@ i18next
 const port = config.PORT || 8080
 const app = new Application()
 const handle = i18nextMiddleware.handle(i18next)
-app.use((next) =>
-  (c) => {
-    handle(c.request, c.response, () => {})
-    return next(c)
-  }
-)
+app.use((next) => (c) => {
+  handle(c.request, c.response, () => {})
+  return next(c)
+})
 app.get('/', (c) => c.request.t('home.title'))
 await app.start({ port })
 ```
@@ -170,7 +173,7 @@ import i18next from 'https://deno.land/x/i18next/index.js'
 import Backend from 'https://cdn.jsdelivr.net/gh/i18next/i18next-fs-backend/index.js'
 import i18nextMiddleware from 'https://deno.land/x/i18next_http_middleware/index.js'
 import { createApp } from 'https://servestjs.org/@v1.0.0-rc2/mod.ts'
-import { config } from "https://deno.land/x/dotenv/dotenv.ts";
+import { config } from 'https://deno.land/x/dotenv/dotenv.ts'
 
 i18next
   .use(Backend)
@@ -194,7 +197,7 @@ app.get('/', async (req) => {
   await req.respond({
     status: 200,
     headers: new Headers({
-      'content-type': 'text/plain',
+      'content-type': 'text/plain'
     }),
     body: req.t('home.title')
   })
@@ -290,7 +293,7 @@ Define your own functions to handle your custom request or response
 middleware.handle(i18next, {
   getPath: (req) => req.path,
   getUrl: (req) => req.url,
-  setUrl: (req, url) => req.url = url,
+  setUrl: (req, url) => (req.url = url),
   getQuery: (req) => req.query,
   getParams: (req) => req.params,
   getBody: (req) => req.body,
@@ -391,15 +394,14 @@ lngDetector.init(options)
 module.exports = {
   name: 'myDetectorsName',
 
-  lookup: function(req, res, options) {
+  lookup: function (req, res, options) {
     // options -> are passed in options
     return 'en'
   },
 
-  cacheUserLanguage: function(req, res, lng, options) {
+  cacheUserLanguage: function (req, res, lng, options) {
     // options -> are passed in options
     // lng -> current language, will be called after init and on changeLanguage
-
     // store it
   }
 }
