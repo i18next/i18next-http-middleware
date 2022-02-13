@@ -103,9 +103,7 @@ const server = Hapi.server({
   port: port,
   host: '0.0.0.0',
 
-const app = fastify()
-
-await app.register({
+await server.register({
   plugin: i18nextMiddleware.hapiPlugin,
   options: {
     i18next,
@@ -114,7 +112,7 @@ await app.register({
 })
 
 // in your request handler
-app.route({
+server.route({
   method: 'GET',
   path: '/myRoute',
   handler: (request, h) => {
