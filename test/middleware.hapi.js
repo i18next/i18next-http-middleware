@@ -46,8 +46,7 @@ describe('middleware hapi', () => {
         url: '/'
       })
 
-      // temporarirly disabled as plugin is not able to set the header
-      // expect(res.headers).to.property('content-language', 'en')
+      expect(res.headers).to.property('content-language', 'en')
       expect(res.payload).to.eql('key')
     })
   })
