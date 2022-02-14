@@ -1,3 +1,6 @@
+## [v3.2.0](https://github.com/i18next/i18next-http-middleware/compare/v3.1.6...v3.2.0)
+- HapiJs support [#50](https://github.com/i18next/i18next-http-middleware/pull/50)
+
 ## [v3.1.6](https://github.com/i18next/i18next-http-middleware/compare/v3.1.5...v3.1.6)
 - add Fastify type support [#47](https://github.com/i18next/i18next-http-middleware/pull/47)
 
