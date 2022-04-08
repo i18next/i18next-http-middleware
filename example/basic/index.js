@@ -8,11 +8,34 @@ const Backend = require('i18next-fs-backend')
 const app = express()
 const port = process.env.PORT || 8080
 
+// const customDetector = {
+//   name: 'customDetector',
+//   lookup: (req) => {
+//     console.log('Custom detector lookup');
+//     console.log('req.query.custom', req.query.custom);
+
+//     switch (req.query.custom) {
+//       case 'en':
+//         return 'en-US';
+//       case 'fr':
+//         return 'fr-FR';
+//       default:
+//         return 'en-US';
+//     }
+//   }
+// }
+// const languageDetector = new i18nextMiddleware.LanguageDetector()
+// languageDetector.addDetector(customDetector)
+
 i18next
   .use(Backend)
+  // .use(languageDetector)
   .use(i18nextMiddleware.LanguageDetector)
   .init({
     // debug: true,
+    // detection: {
+    //   order: ['customDetector']
+    // },
     backend: {
       // eslint-disable-next-line no-path-concat
       loadPath: __dirname + '/locales/{{lng}}/{{ns}}.json',
