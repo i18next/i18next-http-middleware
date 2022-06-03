@@ -1,3 +1,6 @@
+## [v3.2.1](https://github.com/i18next/i18next-http-middleware/compare/v3.2.0...v3.2.1)
+- fix issue missing i18n.t and t functions before authenticating [#52](https://github.com/i18next/i18next-http-middleware/pull/52)
+
 ## [v3.2.0](https://github.com/i18next/i18next-http-middleware/compare/v3.1.6...v3.2.0)
 - HapiJs support [#50](https://github.com/i18next/i18next-http-middleware/pull/50)
 
