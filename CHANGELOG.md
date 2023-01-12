@@ -1,3 +1,6 @@
+## [v3.2.2](https://github.com/i18next/i18next-http-middleware/compare/v3.2.1...v3.2.2)
+- optimize header based language detection for 3 char languages [#54](https://github.com/i18next/i18next-http-middleware/issues/54)
+
 ## [v3.2.1](https://github.com/i18next/i18next-http-middleware/compare/v3.2.0...v3.2.1)
 - fix issue missing i18n.t and t functions before authenticating [#52](https://github.com/i18next/i18next-http-middleware/pull/52)
 

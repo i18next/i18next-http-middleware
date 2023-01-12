@@ -75,6 +75,18 @@ describe('language detector', () => {
       // expect(res).to.eql({})
     })
 
+    it('detect 3 char lngs', () => {
+      const req = {
+        headers: {
+          'accept-language': 'haw-US'
+        }
+      }
+      const res = {}
+      const lng = ld.detect(req, res)
+      expect(lng).to.eql('haw-US')
+      // expect(res).to.eql({})
+    })
+
     it('detect with custom regex', () => {
       const req = {
         headers: {
