@@ -419,6 +419,8 @@ i18next.use(lngDetector).init({
 })
 ```
 
+Don't forget: You have to add the name of your detector (`myDetectorsName` in this case) to the `order` array in your `options` object. Without that, your detector won't be used. See the [Detector Options section for more](#detector-options).
+
 ---
 
 <h3 align='center'>Gold Sponsors</h3>
