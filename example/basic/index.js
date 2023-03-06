@@ -1,7 +1,7 @@
 const express = require('express')
 const i18next = require('i18next')
-// const i18nextMiddleware = require('i18next-http-middleware')
-const i18nextMiddleware = require('../../../i18next-http-middleware')
+const i18nextMiddleware = require('i18next-http-middleware')
+// const i18nextMiddleware = require('../../../i18next-http-middleware')
 const Backend = require('i18next-fs-backend')
 // const Backend = require('../../../i18next-fs-backend')
 
