@@ -1,7 +1,7 @@
 const express = require('express')
 const i18next = require('i18next')
-const i18nextMiddleware = require('i18next-http-middleware')
-// const i18nextMiddleware = require('../../../i18next-http-middleware')
+// const i18nextMiddleware = require('i18next-http-middleware')
+const i18nextMiddleware = require('../../../i18next-http-middleware')
 const Backend = require('i18next-fs-backend')
 // const Backend = require('../../../i18next-fs-backend')
 
@@ -60,6 +60,32 @@ app.get('/', (req, res) => {
     'req.t("home.title")': req.t('home.title')
   }, null, 2))
 })
+
+app.get('/missingtest', (req, res) => {
+  req.t('nonExisting', 'some default value')
+  res.send('check the locales files...')
+})
+
+// loadPath for client: http://localhost:8080/locales/{{lng}}/{{ns}}.json
+app.use('/locales', express.static('locales'))
+
+// or instead of static
+// app.get('/locales/:lng/:ns', i18nextMiddleware.getResourcesHandler(i18next))
+// loadPath for client: http://localhost:8080/locales/{{lng}}/{{ns}}
+
+// missing keys make sure the body is parsed (i.e. with [body-parser](https://github.com/expressjs/body-parser#bodyparserjsonoptions))
+app.post('/locales/add/:lng/:ns', i18nextMiddleware.missingKeyHandler(i18next))
+// The client can be configured with i18next-http-backend, for example like this: 
+// import HttpBackend from 'i18next-http-backend'
+// i18next.use(HttpBackend).init({
+//   lng: 'en',
+//   fallbackLng: 'en',
+//   backend: {
+//     loadPath: 'http://localhost:8080/locales/{{lng}}/{{ns}}.json',
+//     addPath: 'http://localhost:8080/locales/add/{{lng}}/{{ns}}'
+//   }
+// })
+
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`)

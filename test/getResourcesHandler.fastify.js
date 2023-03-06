@@ -39,4 +39,26 @@ describe('getResourcesHandler fastify', () => {
       })
     })
   })
+
+  describe('handling a request with route params instead of query', () => {
+    it('should return the appropriate resource', (done) => {
+      const app = fastify()
+      app.get('/locales/:lng/:ns', i18nextMiddleware.getResourcesHandler(i18next))
+
+      app.inject({
+        method: 'GET',
+        url: '/locales/en/translation',
+        query: {}
+      }, (err, res) => {
+        expect(err).not.to.be.ok()
+        expect(res.headers).to.property('content-type', 'application/json; charset=utf-8')
+        expect(res.headers).to.property('cache-control', 'no-cache')
+        expect(res.headers).to.property('pragma', 'no-cache')
+        expect(res.json()).to.have.property('en')
+        expect(res.json().en).to.have.property('translation')
+        expect(res.json().en.translation).to.have.property('hi', 'there')
+        done()
+      })
+    })
+  })
 })

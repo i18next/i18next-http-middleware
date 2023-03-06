@@ -208,6 +208,7 @@ await app.listen({ port })
 ```js
 // missing keys make sure the body is parsed (i.e. with [body-parser](https://github.com/expressjs/body-parser#bodyparserjsonoptions))
 app.post('/locales/add/:lng/:ns', middleware.missingKeyHandler(i18next))
+// addPath for client: http://localhost:8080/locales/add/{{lng}}/{{ns}}
 
 // multiload backend route
 app.get('/locales/resources.json', middleware.getResourcesHandler(i18next))
@@ -215,6 +216,16 @@ app.get('/locales/resources.json', middleware.getResourcesHandler(i18next))
 // GET /locales/resources.json
 // GET /locales/resources.json?lng=en
 // GET /locales/resources.json?lng=en&ns=translation
+
+// serve translations:
+app.use('/locales', express.static('locales'))
+// GET /locales/en/translation.json
+// loadPath for client: http://localhost:8080/locales/{{lng}}/{{ns}}.json
+
+// or instead of static
+app.get('/locales/:lng/:ns', middleware.getResourcesHandler(i18next))
+// GET /locales/en/translation
+// loadPath for client: http://localhost:8080/locales/{{lng}}/{{ns}}
 ```
 
 ## add localized routes
