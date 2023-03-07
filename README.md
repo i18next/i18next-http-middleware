@@ -36,7 +36,8 @@ i18next.use(middleware.LanguageDetector).init({
 var app = express()
 app.use(
   middleware.handle(i18next, {
-    ignoreRoutes: ['/foo'] // or function(req, res, options, i18next) { /* return true to ignore */ }
+    ignoreRoutes: ['/foo'], // or function(req, res, options, i18next) { /* return true to ignore */ }
+    removeLngFromUrl: false // removes the language from the url when language detected in path
   })
 )
 
@@ -226,6 +227,11 @@ app.use('/locales', express.static('locales'))
 app.get('/locales/:lng/:ns', middleware.getResourcesHandler(i18next))
 // GET /locales/en/translation
 // loadPath for client: http://localhost:8080/locales/{{lng}}/{{ns}}
+
+app.get('/locales/:lng/:ns', middleware.getResourcesHandler(i18next, {
+  maxAge: 60 * 60 * 24 * 30, // adds appropriate cache header if cache option is passed or NODE_ENV === 'production', defaults to 30 days
+  cache: true // defaults to false
+}))
 ```
 
 ## add localized routes
