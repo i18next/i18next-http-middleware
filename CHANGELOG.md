@@ -1,3 +1,6 @@
+## [v3.3.1](https://github.com/i18next/i18next-http-middleware/compare/v3.3.0...v3.3.1)
+- Support TS5 types exports
+
 ## [v3.3.0](https://github.com/i18next/i18next-http-middleware/compare/v3.2.2...v3.3.0)
 - fallback in getResourcesHandler to check also in route params
 
