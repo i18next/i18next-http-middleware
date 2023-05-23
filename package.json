@@ -8,13 +8,16 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./index.d.ts",
       "require": "./cjs/index.js",
       "default": "./esm/index.js"
     },
     "./cjs": {
+      "types": "./index.d.ts",
       "default": "./cjs/index.js"
     },
     "./esm": {
+      "types": "./index.d.ts",
       "default": "./esm/index.js"
     }
   },
