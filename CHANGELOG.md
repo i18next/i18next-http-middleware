@@ -1,3 +1,6 @@
+## [v3.3.2](https://github.com/i18next/i18next-http-middleware/compare/v3.3.1...v3.3.2)
+- deno: oak fix [#59](https://github.com/i18next/i18next-http-middleware/issues/59)
+
 ## [v3.3.1](https://github.com/i18next/i18next-http-middleware/compare/v3.3.0...v3.3.1)
 - Support TS5 types exports
 
