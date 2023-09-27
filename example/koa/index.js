@@ -4,8 +4,8 @@ const koaBody = require('koa-body').default
 const serve = require('koa-static')
 const mount = require('koa-mount')
 const i18next = require('i18next')
-// const i18nextMiddleware = require('i18next-http-middleware')
-const i18nextMiddleware = require('../../../i18next-http-middleware')
+const i18nextMiddleware = require('i18next-http-middleware')
+// const i18nextMiddleware = require('../../../i18next-http-middleware')
 const Backend = require('i18next-fs-backend')
 // const Backend = require('../../../i18next-fs-backend')
 
