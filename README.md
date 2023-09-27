@@ -128,6 +128,36 @@ server.route({
 
 ```
 
+### Koa usage
+
+```js
+var i18next = require('i18next')
+var middleware = require('i18next-http-middleware')
+const Koa = require('koa')
+const router = require('@koa/router')()
+
+i18next.use(middleware.LanguageDetector).init({
+  preload: ['en', 'de', 'it'],
+  ...otherOptions
+})
+
+var app = new Koa()
+app.use(i18nextMiddleware.koaPlugin(i18next, {
+  ignoreRoutes: ['/foo'] // or function(req, res, options, i18next) { /* return true to ignore */ }
+}))
+
+// in your request handler
+router.get('/myRoute', ctx => {
+  ctx.body = JSON.stringify({
+    'ctx.language': ctx.language,
+    'ctx.i18n.language': ctx.i18n.language,
+    'ctx.i18n.languages': ctx.i18n.languages,
+    'ctx.i18n.languages[0]': ctx.i18n.languages[0],
+    'ctx.t("home.title")': ctx.t('home.title')
+  }, null, 2)
+})
+```
+
 ### Deno usage
 
 #### abc

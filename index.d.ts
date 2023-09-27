@@ -75,6 +75,8 @@ type IgnoreRoutesFunction = (
 
 export function handle(i18next: I18next, options?: HandleOptions): Handler;
 
+export function koaPlugin(i18next: I18next, options?: HandleOptions): (context: unknown, next: Function) => any;
+
 export function plugin(
   instance: any,
   options: HandleOptions & { i18next?: I18next },

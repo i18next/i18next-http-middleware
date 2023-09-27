@@ -1,3 +1,6 @@
+## [v3.4.0](https://github.com/i18next/i18next-http-middleware/compare/v3.3.2...v3.4.0)
+- support koa [#61](https://github.com/i18next/i18next-http-middleware/issues/61)
+
 ## [v3.3.2](https://github.com/i18next/i18next-http-middleware/compare/v3.3.1...v3.3.2)
 - deno: oak fix [#59](https://github.com/i18next/i18next-http-middleware/issues/59)
 
