@@ -7,7 +7,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "fastify": "3.18.0",
+    "fastify": "3.29.4",
     "fastify-pug": "2.0.0",
     "i18next": "20.3.2",
     "i18next-http-middleware": "3.1.4",
