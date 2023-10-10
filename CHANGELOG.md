@@ -1,3 +1,6 @@
+## [v3.4.1](https://github.com/i18next/i18next-http-middleware/compare/v3.4.0...v3.4.1)
+- fix(languageDetector): handle es-419 special case [#65](https://github.com/i18next/i18next-http-middleware/pull/65)
+
 ## [v3.4.0](https://github.com/i18next/i18next-http-middleware/compare/v3.3.2...v3.4.0)
 - support koa [#61](https://github.com/i18next/i18next-http-middleware/issues/61)
 
