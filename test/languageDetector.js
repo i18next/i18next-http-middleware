@@ -99,6 +99,54 @@ describe('language detector', () => {
       expect(lng).to.eql('Hans')
       // expect(res).to.eql({})
     })
+
+    it('detect region with numbers', () => {
+      const req = {
+        headers: {
+          'accept-language': 'es-419'
+        }
+      }
+      const res = {}
+      const lng = ld.detect(req, res)
+      expect(lng).to.eql('es-419')
+      // expect(res).to.eql({})
+    })
+
+    it('parses weight correctly', () => {
+      const req = {
+        headers: {
+          'accept-language': 'pt;q=0.9,es-419;q=0.8,en;q=0.7'
+        }
+      }
+      const res = {}
+      const lng = ld.detect(req, res)
+      expect(lng).to.eql('pt')
+      // expect(res).to.eql({})
+    })
+
+    it('parses weight out of order correctly', () => {
+      const req = {
+        headers: {
+          'accept-language': 'es-419;q=0.7,en;q=0.8,pt;q=0.9'
+        }
+      }
+      const res = {}
+      const lng = ld.detect(req, res)
+      expect(lng).to.eql('pt')
+      // expect(res).to.eql({})
+    })
+
+    it('sets weight to 1 as default', () => {
+      const req = {
+        headers: {
+          'accept-language': 'pt-BR,pt;q=0.9,es-419;q=0.8,en;q=0.7'
+        }
+      }
+      const res = {}
+      const lng = ld.detect(req, res)
+      expect(lng).to.eql('pt-BR')
+      // expect(res).to.eql({})
+    })
   })
 
   describe('path', () => {
