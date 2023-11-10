@@ -1,3 +1,6 @@
+## [v3.5.0](https://github.com/i18next/i18next-http-middleware/compare/v3.4.1...v3.5.0)
+- fix: separate cjs and mjs typings
+
 ## [v3.4.1](https://github.com/i18next/i18next-http-middleware/compare/v3.4.0...v3.4.1)
 - fix(languageDetector): handle es-419 special case [#65](https://github.com/i18next/i18next-http-middleware/pull/65)
 

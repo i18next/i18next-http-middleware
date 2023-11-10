@@ -11,6 +11,7 @@
   },
   "include": [
     "test/types/*.test-d.ts",
-    "*.d.ts"
+    "*.d.ts",
+    "*.d.mts"
   ]
 }
