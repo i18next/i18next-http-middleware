@@ -71,6 +71,7 @@ app.use('/locales', express.static('locales'))
 
 // or instead of static
 // app.get('/locales/:lng/:ns', i18nextMiddleware.getResourcesHandler(i18next))
+// app.get('/locales/:lng/:ns', i18nextMiddleware.getResourcesHandler(i18next, { cache: false }))
 // loadPath for client: http://localhost:8080/locales/{{lng}}/{{ns}}
 
 // missing keys make sure the body is parsed (i.e. with [body-parser](https://github.com/expressjs/body-parser#bodyparserjsonoptions))
