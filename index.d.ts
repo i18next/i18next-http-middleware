@@ -115,6 +115,11 @@ interface LanguageDetectorOptions {
   caches?: LanguageDetectorCaches;
   cookieExpirationDate?: Date;
   cookieDomain?: string;
+
+  /**
+   * optional conversion function to use to modify the detected language code
+   */
+  convertDetectedLanguage?: 'Iso15897' | ((lng: string) => string);
 }
 interface LanguageDetectorAllOptions {
   fallbackLng: boolean | string | string[];

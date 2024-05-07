@@ -1,3 +1,6 @@
+## [v3.6.0](https://github.com/i18next/i18next-http-middleware/compare/v3.5.0...v3.6.0)
+- introduce convertDetectedLanguage option
+
 ## [v3.5.0](https://github.com/i18next/i18next-http-middleware/compare/v3.4.1...v3.5.0)
 - fix: separate cjs and mjs typings
 

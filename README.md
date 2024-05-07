@@ -398,7 +398,11 @@ As with all modules you can either pass the constructor function (class) to the 
   cookieDomain: 'myDomain',
   cookiePath: '/my/path',
   cookieSecure: true, // if need secure cookie
-  cookieSameSite: 'strict' // 'strict', 'lax' or 'none'
+  cookieSameSite: 'strict', // 'strict', 'lax' or 'none'
+
+  // optional conversion function used to modify the detected language code
+  convertDetectedLanguage: 'Iso15897',
+  convertDetectedLanguage: (lng) => lng.replace('-', '_')
 }
 ```
 
