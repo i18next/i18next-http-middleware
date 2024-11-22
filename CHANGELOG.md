@@ -1,3 +1,6 @@
+## [v3.7.0](https://github.com/i18next/i18next-http-middleware/compare/v3.6.0...v3.7.0)
+- support i18next v24
+
 ## [v3.6.0](https://github.com/i18next/i18next-http-middleware/compare/v3.5.0...v3.6.0)
 - introduce convertDetectedLanguage option
 

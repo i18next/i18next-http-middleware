@@ -15,7 +15,7 @@ i18next
   .use(i18nextMiddleware.LanguageDetector)
   .init({
     // debug: true,
-    initImmediate: false, // setting initImediate to false, will load the resources synchronously
+    initAsync: false, // setting initAsync to false, will load the resources synchronously
     backend: {
       // eslint-disable-next-line no-path-concat
       loadPath: 'locales/{{lng}}/{{ns}}.json',
