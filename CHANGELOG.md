@@ -1,3 +1,6 @@
+## [v3.7.1](https://github.com/i18next/i18next-http-middleware/compare/v3.7.0...v3.7.1)
+- Just to be sure, sanitize the Content-Language response header. (Eventhough there is no known/reproducible vulnerability yet #80)
+
 ## [v3.7.0](https://github.com/i18next/i18next-http-middleware/compare/v3.6.0...v3.7.0)
 - support i18next v24
 
