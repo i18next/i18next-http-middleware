@@ -1,7 +1,6 @@
 import {
   Application,
   Handler,
-  NextFunction,
   Request,
   RequestHandler,
   Response,
@@ -80,8 +79,8 @@ export function koaPlugin(i18next: I18next, options?: HandleOptions): (context: 
 export function plugin(
   instance: any,
   options: HandleOptions & { i18next?: I18next },
-  next: NextFunction
-): Handler;
+  next: (err?: Error) => void
+): void;
 
 export function getResourcesHandler(
   i18next: I18next,
