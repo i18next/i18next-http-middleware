@@ -10,7 +10,7 @@
   "dependencies": {
     "express": "4.20.0",
     "i18next": "25.0.0",
-    "i18next-http-middleware": "3.7.2",
+    "i18next-http-middleware": "3.7.3",
     "i18next-fs-backend": "2.6.0"
   }
 }
