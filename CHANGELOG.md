@@ -1,3 +1,6 @@
+## [v3.7.3](https://github.com/i18next/i18next-http-middleware/compare/v3.7.2...v3.7.3)
+- add shortcut for resolvedLanguage
+
 ## [v3.7.2](https://github.com/i18next/i18next-http-middleware/compare/v3.7.1...v3.7.2)
 - fix: Fastify no longer complains about the type [#83](https://github.com/i18next/i18next-http-middleware/pull/83)
 

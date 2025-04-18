@@ -19,6 +19,7 @@ describe('middleware custom framework', () => {
       handle(req, res, () => {
         expect(req).to.have.property('lng', 'en')
         expect(req).to.have.property('locale', 'en')
+        expect(req).to.have.property('resolvedLanguage', 'en')
         expect(req).to.have.property('language', 'en')
         expect(req).to.have.property('languages')
         expect(req.languages).to.eql(['en'])
@@ -46,6 +47,7 @@ describe('middleware custom framework', () => {
       handle(req, res, () => {
         expect(req).to.have.property('lng', 'en')
         expect(req).to.have.property('locale', 'en')
+        expect(req).to.have.property('resolvedLanguage', 'en')
         expect(req).to.have.property('language', 'en')
         expect(req).to.have.property('languages')
         expect(req.languages).to.eql(['en'])
@@ -76,6 +78,7 @@ describe('middleware custom framework', () => {
       handle(req, res, () => {
         expect(req).not.to.have.property('lng')
         expect(req).not.to.have.property('locale')
+        expect(req).not.to.have.property('resolvedLanguage')
         expect(req).not.to.have.property('language')
         expect(req).not.to.have.property('languages')
         expect(req).not.to.have.property('i18n')
@@ -93,6 +96,7 @@ describe('middleware custom framework', () => {
       handle(req, res, () => {
         expect(req).to.have.property('lng', 'en')
         expect(req).to.have.property('locale', 'en')
+        expect(req).to.have.property('resolvedLanguage', 'en')
         expect(req).to.have.property('language', 'en')
         expect(req).to.have.property('languages')
         expect(req.languages).to.eql(['en'])

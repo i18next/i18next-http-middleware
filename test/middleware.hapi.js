@@ -30,6 +30,7 @@ describe('middleware hapi', () => {
         handler: async (req, h) => {
           expect(req).to.have.property('lng', 'en')
           expect(req).to.have.property('locale', 'en')
+          expect(req).to.have.property('resolvedLanguage', 'en')
           expect(req).to.have.property('language', 'en')
           expect(req).to.have.property('languages')
           expect(req.languages).to.eql(['en'])

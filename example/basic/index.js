@@ -54,6 +54,7 @@ app.use(i18nextMiddleware.handle(i18next))
 app.get('/', (req, res) => {
   res.send(JSON.stringify({
     'req.language': req.language,
+    'req.i18n.resolvedLanguage': req.i18n.resolvedLanguage,
     'req.i18n.language': req.i18n.language,
     'req.i18n.languages': req.i18n.languages,
     'req.i18n.languages[0]': req.i18n.languages[0],

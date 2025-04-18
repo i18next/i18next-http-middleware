@@ -43,6 +43,7 @@ app.use(
 
 // in your request handler
 app.get('myRoute', (req, res) => {
+  var resolvedLng = req.resolvedLanguage // 'de-CH'
   var lng = req.language // 'de-CH'
   var lngs = req.languages // ['de-CH', 'de', 'en']
   req.i18n.changeLanguage('en') // will not load that!!! assert it was preloaded
@@ -117,6 +118,7 @@ server.route({
   method: 'GET',
   path: '/myRoute',
   handler: (request, h) => {
+    var resolvedLng = request.resolvedLanguage // 'de-CH'
     var lng = request.language // 'de-CH'
     var lngs = v.languages // ['de-CH', 'de', 'en']
     request.i18n.changeLanguage('en') // will not load that!!! assert it was preloaded
@@ -149,7 +151,9 @@ app.use(i18nextMiddleware.koaPlugin(i18next, {
 // in your request handler
 router.get('/myRoute', ctx => {
   ctx.body = JSON.stringify({
+    'ctx.resolvedLanguage': ctx.resolvedLanguage,
     'ctx.language': ctx.language,
+    'ctx.i18n.resolvedLanguage': ctx.i18n.resolvedLanguage,
     'ctx.i18n.language': ctx.i18n.language,
     'ctx.i18n.languages': ctx.i18n.languages,
     'ctx.i18n.languages[0]': ctx.i18n.languages[0],

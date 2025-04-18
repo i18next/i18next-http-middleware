@@ -27,6 +27,7 @@ describe('middleware koa', () => {
       router.get('/', (ctx) => {
         expect(ctx).to.have.property('lng', 'en')
         expect(ctx).to.have.property('locale', 'en')
+        expect(ctx).to.have.property('resolvedLanguage', 'en')
         expect(ctx).to.have.property('language', 'en')
         expect(ctx).to.have.property('languages')
         expect(ctx.languages).to.eql(['en'])
