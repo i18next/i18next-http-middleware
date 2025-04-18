@@ -397,3 +397,20 @@ describe('language detector (ISO 15897 locales)', () => {
     })
   })
 })
+
+describe('language detector (with xss filter)', () => {
+  const ld = new LanguageDetector(i18next.services, { order: ['cookie', 'header'], cookieSameSite: 'none' })
+
+  it('detect', () => {
+    const req = {
+      headers: {
+        cookie: 'i18next=de-"><script>alert(\'xss\')</script>',
+        'accept-language': 'fr-CH'
+      }
+    }
+    const res = {}
+    const lng = ld.detect(req, res)
+    expect(lng).to.eql('fr-CH')
+    // expect(res).to.eql({})
+  })
+})

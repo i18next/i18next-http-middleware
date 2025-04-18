@@ -1,3 +1,6 @@
+## [v3.7.4](https://github.com/i18next/i18next-http-middleware/compare/v3.7.3...v3.7.4)
+- check for common xss attack patterns on detected language
+
 ## [v3.7.3](https://github.com/i18next/i18next-http-middleware/compare/v3.7.2...v3.7.3)
 - add shortcut for resolvedLanguage
 
