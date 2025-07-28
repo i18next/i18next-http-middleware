@@ -75,7 +75,7 @@
     "compile": "npm run compile:esm && npm run compile:cjs",
     "build": "npm run compile",
     "test": "npm run lint && npm run build && mocha test -R spec --exit --experimental-modules && npm run test:types",
-    "test:deno": "deno test --allow-net test/deno/*.js",
+    "test:deno": "deno test --allow-net --allow-env test/deno/*.js",
     "test:types": "tsd",
     "preversion": "npm run test && npm run build && git push",
     "postversion": "git push && git push --tags"

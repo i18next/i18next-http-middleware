@@ -1,3 +1,6 @@
+## [v3.8.0](https://github.com/i18next/i18next-http-middleware/compare/v3.7.4...v3.8.0)
+- Introduce 'cookieHttpOnly' option to configure HttpOnly cookie [#89](https://github.com/i18next/i18next-http-middleware/pull/89)
+
 ## [v3.7.4](https://github.com/i18next/i18next-http-middleware/compare/v3.7.3...v3.7.4)
 - check for common xss attack patterns on detected language
 
