@@ -48,6 +48,60 @@ describe('language detector', () => {
       expect(res.headers['Set-Cookie']).to.match(/my=cookie/)
       expect(res.headers['Set-Cookie']).to.match(/SameSite=None/)
     })
+
+    it('does not set httpOnly flag by default', () => {
+      const ld = new LanguageDetector(i18next.services, { order: ['cookie', 'header'] })
+      const req = {}
+      const res = {
+        headers: {
+          'Set-Cookie': 'my=cookie'
+        }
+      }
+      res.header = (name, value) => { res.headers[name] = value }
+      ld.cacheUserLanguage(req, res, 'it', ['cookie'])
+      expect(req).to.eql({})
+      expect(res).to.have.property('headers')
+      expect(res.headers).to.have.property('Set-Cookie')
+      expect(res.headers['Set-Cookie']).to.match(/Path=\//)
+      expect(res.headers['Set-Cookie']).to.match(/my=cookie/)
+      expect(res.headers['Set-Cookie']).not.to.match(/HttpOnly/)
+    })
+
+    it('does not set httpOnly flag when cookieHttpOnly is false', () => {
+      const ld = new LanguageDetector(i18next.services, { order: ['cookie', 'header'], cookieHttpOnly: false })
+      const req = {}
+      const res = {
+        headers: {
+          'Set-Cookie': 'my=cookie'
+        }
+      }
+      res.header = (name, value) => { res.headers[name] = value }
+      ld.cacheUserLanguage(req, res, 'it', ['cookie'])
+      expect(req).to.eql({})
+      expect(res).to.have.property('headers')
+      expect(res.headers).to.have.property('Set-Cookie')
+      expect(res.headers['Set-Cookie']).to.match(/Path=\//)
+      expect(res.headers['Set-Cookie']).to.match(/my=cookie/)
+      expect(res.headers['Set-Cookie']).not.to.match(/HttpOnly/)
+    })
+
+    it('sets httpOnly flag when cookieHttpOnly is true', () => {
+      const ld = new LanguageDetector(i18next.services, { order: ['cookie', 'header'], cookieHttpOnly: true })
+      const req = {}
+      const res = {
+        headers: {
+          'Set-Cookie': 'my=cookie'
+        }
+      }
+      res.header = (name, value) => { res.headers[name] = value }
+      ld.cacheUserLanguage(req, res, 'it', ['cookie'])
+      expect(req).to.eql({})
+      expect(res).to.have.property('headers')
+      expect(res.headers).to.have.property('Set-Cookie')
+      expect(res.headers['Set-Cookie']).to.match(/Path=\//)
+      expect(res.headers['Set-Cookie']).to.match(/my=cookie/)
+      expect(res.headers['Set-Cookie']).to.match(/HttpOnly/)
+    })
   })
 
   describe('header', () => {
