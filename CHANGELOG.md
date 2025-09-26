@@ -1,3 +1,6 @@
+## [v3.8.1](https://github.com/i18next/i18next-http-middleware/compare/v3.8.0...v3.8.1)
+- Try to fix Language detector doesn't fall back to basic language when dialect is present [#91](https://github.com/i18next/i18next-http-middleware/issues/91) by making sure fix for [#26](https://github.com/i18next/i18next-http-middleware/issues/26) is still working
+
 ## [v3.8.0](https://github.com/i18next/i18next-http-middleware/compare/v3.7.4...v3.8.0)
 - Introduce 'cookieHttpOnly' option to configure HttpOnly cookie [#89](https://github.com/i18next/i18next-http-middleware/pull/89)
 

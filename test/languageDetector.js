@@ -468,3 +468,57 @@ describe('language detector (with xss filter)', () => {
     // expect(res).to.eql({})
   })
 })
+
+describe('language detector with mixed detections and nonExplicitSupportedLngs', () => {
+  const detectionOptions = { order: ['cookie', 'header'] }
+  const i18nInstance = i18next.createInstance()
+
+  const ld = new LanguageDetector(i18nInstance.services, detectionOptions)
+  i18nInstance
+    .use(ld)
+    .init({
+      nonExplicitSupportedLngs: true,
+      supportedLngs: ['en', 'de', 'es', 'pt', 'fr', 'it', 'pl', 'ru', 'nl', 'ja', 'ko'],
+      detection: detectionOptions,
+      fallbackLng: 'de'
+    })
+
+  it('detect', () => {
+    const req = {
+      headers: {
+        cookie: 'i18next=he"',
+        'accept-language': 'pt-BR'
+      }
+    }
+    const res = {}
+    const lng = ld.detect(req, res)
+    expect(lng).to.eql('pt-BR')
+    // expect(res).to.eql({})
+  })
+})
+
+describe('language detector with mixed supportedLngs but dialect present', () => {
+  const detectionOptions = { order: ['cookie', 'header'] }
+  const i18nInstance = i18next.createInstance()
+
+  const ld = new LanguageDetector(i18nInstance.services, detectionOptions)
+  i18nInstance
+    .use(ld)
+    .init({
+      supportedLngs: ['en', 'pt'],
+      detection: detectionOptions,
+      fallbackLng: 'en'
+    })
+
+  it('detect', () => {
+    const req = {
+      headers: {
+        'accept-language': 'pt-BR'
+      }
+    }
+    const res = {}
+    const lng = ld.detect(req, res)
+    expect(lng).to.eql('pt')
+    // expect(res).to.eql({})
+  })
+})
