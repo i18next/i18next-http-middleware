@@ -522,3 +522,83 @@ describe('language detector with mixed supportedLngs but dialect present', () =>
     // expect(res).to.eql({})
   })
 })
+
+describe('language detector with object fallbackLng', () => {
+  it('should handle fallbackLng as object with default property', () => {
+    const detectionOptions = { order: ['cookie', 'header'] }
+    const i18nInstance = i18next.createInstance()
+
+    const ld = new LanguageDetector(i18nInstance.services, detectionOptions)
+    i18nInstance
+      .use(ld)
+      .init({
+        supportedLngs: ['en', 'de', 'fr'],
+        detection: detectionOptions,
+        fallbackLng: {
+          default: ['en']
+        }
+      })
+
+    const req = {
+      headers: {
+        'accept-language': 'zh-CN' // Not in supportedLngs
+      }
+    }
+    const res = {}
+    const lng = ld.detect(req, res)
+    expect(lng).to.eql('en')
+  })
+
+  it('should handle fallbackLng as object with language-specific fallbacks', () => {
+    const detectionOptions = { order: ['cookie', 'header'] }
+    const i18nInstance = i18next.createInstance()
+
+    const ld = new LanguageDetector(i18nInstance.services, detectionOptions)
+    i18nInstance
+      .use(ld)
+      .init({
+        supportedLngs: ['en', 'de', 'fr', 'es'],
+        detection: detectionOptions,
+        fallbackLng: {
+          'de-CH': ['de', 'en'],
+          zh: ['en'],
+          default: ['en']
+        }
+      })
+
+    const req = {
+      headers: {
+        'accept-language': 'ja-JP' // Not in supportedLngs, should use default
+      }
+    }
+    const res = {}
+    const lng = ld.detect(req, res)
+    expect(lng).to.eql('en')
+  })
+
+  it('should handle fallbackLng as object when detected language not supported', () => {
+    const detectionOptions = { order: ['querystring', 'header'] }
+    const i18nInstance = i18next.createInstance()
+
+    const ld = new LanguageDetector(i18nInstance.services, detectionOptions)
+    i18nInstance
+      .use(ld)
+      .init({
+        supportedLngs: ['en', 'de', 'fr'],
+        detection: detectionOptions,
+        fallbackLng: {
+          default: ['en']
+        }
+      })
+
+    const req = {
+      url: '/some/route?lng=it', // Italian not in supportedLngs
+      headers: {
+        'accept-language': 'it-IT'
+      }
+    }
+    const res = {}
+    const lng = ld.detect(req, res)
+    expect(lng).to.eql('en')
+  })
+})
