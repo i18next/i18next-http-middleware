@@ -398,6 +398,17 @@ describe('language detector (ISO 15897 locales)', () => {
       expect(lng).to.eql('pt_BR')
       // expect(res).to.eql({})
     })
+
+    it('handles JS Headers objects', () => {
+      const headers = new Headers()
+      headers.append('accept-language', 'pt-BR,pt;q=0.9,es-419;q=0.8,en;q=0.7')
+      const req = {
+        headers
+      }
+      const res = {}
+      const lng = ld.detect(req, res)
+      expect(lng).to.eql('pt_BR')
+    })
   })
 
   describe('path', () => {
