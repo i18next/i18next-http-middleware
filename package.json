@@ -34,7 +34,7 @@
     "@hapi/hapi": "^21.3.12",
     "@types/express-serve-static-core": "^5.0.1",
     "@koa/router": "12.0.1",
-    "koa": "2.16.1",
+    "koa": "3.0.3",
     "babel-plugin-add-module-exports": "1.0.4",
     "eslint": "8.53.0",
     "eslint-config-standard": "17.1.0",
