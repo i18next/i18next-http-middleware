@@ -1,4 +1,4 @@
-import expect from 'expect.js'
+import { expect } from 'jsr:@std/expect'
 import { assertEquals, assertNotEquals } from 'https://deno.land/std/testing/asserts.ts'
 import i18next from 'https://deno.land/x/i18next/index.js'
 import i18nextMiddleware from '../../index.js'
@@ -35,7 +35,6 @@ test('middleware fresh', async () => {
     { headers }
   ));
   const resHeaders = Object.fromEntries(res.headers.entries())
-  expect(resHeaders).to.have.property('content-language')
-  expect(resHeaders['content-language']).to.eql('fr')
-  expect(await res.text()).to.eql("bonjour")
+  expect(resHeaders).toEqual(expect.objectContaining({ 'content-language': 'fr'}))
+  expect(await res.text()).toEqual("bonjour")
 })
