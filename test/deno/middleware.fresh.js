@@ -1,5 +1,4 @@
 import { expect } from 'jsr:@std/expect'
-import { assertEquals, assertNotEquals } from 'https://deno.land/std/testing/asserts.ts'
 import i18next from 'https://deno.land/x/i18next/index.js'
 import i18nextMiddleware from '../../index.js'
 const { test } = Deno
