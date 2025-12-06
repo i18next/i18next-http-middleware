@@ -1,3 +1,6 @@
+## [v3.9.0](https://github.com/i18next/i18next-http-middleware/compare/v3.8.3...v3.9.0)
+- Fresh 2 support [#98](https://github.com/i18next/i18next-http-middleware/pull/98)
+
 ## [v3.8.3](https://github.com/i18next/i18next-http-middleware/compare/v3.8.2...v3.8.3)
 - Supports the parsing of Deno headers (fixes [#94](https://github.com/i18next/i18next-http-middleware/issues/94)) [#95](https://github.com/i18next/i18next-http-middleware/pull/95)
 
