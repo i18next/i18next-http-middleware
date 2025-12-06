@@ -238,6 +238,35 @@ app.get('/', async (req) => {
 await app.listen({ port })
 ```
 
+#### Fresh 2.x
+
+```js
+import i18next from 'https://deno.land/x/i18next/index.js'
+import i18nextMiddleware from 'https://deno.land/x/i18next_http_middleware/index.js'
+import { App, createDefine } from "jsr:@fresh/core";
+
+i18next
+  .use(i18nextMiddleware.LanguageDetector)
+  .init({
+    preload: ["en", "fr"],
+    fallbackLng: "en",
+    resources: {
+      en: {
+        translation: { hi: "hello" }
+      },
+      fr: {
+        translation: { hi: "bonjour" }
+      }
+    }
+  });
+
+const app = new App()
+  .use(i18nextMiddleware.freshPlugin(i18next))
+  .get("/", (ctx) => {
+    return new Response(ctx.state.t('hi'))
+  });
+```
+
 ## add routes
 
 ```js
