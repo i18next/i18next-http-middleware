@@ -1,3 +1,6 @@
+## [v3.9.2](https://github.com/i18next/i18next-http-middleware/compare/v3.9.1...v3.9.2)
+- TS definition for default export [#100](https://github.com/i18next/i18next-http-middleware/issues/100)
+
 ## [v3.9.1](https://github.com/i18next/i18next-http-middleware/compare/v3.9.0...v3.9.1)
 - Adds missing TS declaration and options argument. [#99](https://github.com/i18next/i18next-http-middleware/pull/99)
 

@@ -185,3 +185,34 @@ export class LanguageDetector implements i18next.Module {
     caches: LanguageDetectorCaches
   ): void;
 }
+
+
+export interface HapiPlugin<TOptions = any> {
+  name: string;
+  version: string;
+  register: (
+    server: {
+      ext: (
+        event: string,
+        method: (request: any, h: any) => any
+      ) => void;
+    },
+    options: TOptions & HandleOptions & { i18next?: I18next }
+  ) => void;
+}
+
+export const hapiPlugin: HapiPlugin;
+
+declare const middleware: {
+  plugin: typeof plugin;
+  hapiPlugin: typeof hapiPlugin;
+  koaPlugin: typeof koaPlugin;
+  freshPlugin: typeof freshPlugin;
+  handle: typeof handle;
+  getResourcesHandler: typeof getResourcesHandler;
+  missingKeyHandler: typeof missingKeyHandler;
+  addRoute: typeof addRoute;
+  LanguageDetector: typeof LanguageDetector;
+};
+
+export default middleware;
