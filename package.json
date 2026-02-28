@@ -36,7 +36,7 @@
     "@preact/signals": "^2.2.1",
     "@types/express-serve-static-core": "^5.0.1",
     "@koa/router": "12.0.1",
-    "koa": "2.16.1",
+    "koa": "3.1.2",
     "babel-plugin-add-module-exports": "1.0.4",
     "eslint": "8.53.0",
     "eslint-config-standard": "17.1.0",
