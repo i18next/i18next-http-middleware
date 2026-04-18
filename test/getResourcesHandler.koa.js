@@ -5,7 +5,7 @@ import Koa from 'koa'
 import Router from '@koa/router'
 import request from 'supertest'
 
-const router = Router()
+const router = new Router()
 i18next.init({
   fallbackLng: 'en',
   preload: ['en', 'de'],

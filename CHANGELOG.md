@@ -1,3 +1,13 @@
+## [v3.9.3](https://github.com/i18next/i18next-http-middleware/compare/v3.9.2...v3.9.3)
+Security release — all issues found via an internal audit. GHSA advisories filed after release.
+- security: guard `utils.setPath` against prototype pollution via crafted `lng`/`ns` in `getResourcesHandler` (GHSA-TBD)
+- security: sanitise `Content-Language` response header to prevent CRLF injection / unhandled `ERR_INVALID_CHAR` crash via unsanitised language codes (GHSA-TBD)
+- security: skip inherited/prototype-polluting keys (`__proto__`, `constructor`, `prototype`) in `missingKeyHandler` request body
+- security: filter unsafe `lng`/`ns` values in `getResourcesHandler` (reject path-traversal, path separators, control characters, prototype keys, over-long inputs) to prevent path traversal / SSRF via the backend connector and unbounded growth of the shared `i18next.options.ns` array. Any legitimate language code shape is still accepted — i18next permits arbitrary codes ([FAQ](https://www.i18next.com/how-to/faq#how-should-the-language-codes-be-formatted))
+- security: `hasXSS` regex now catches event handlers in any attribute position (previously only matched when the handler was the first attribute; e.g. `<input autofocus onfocus=…>` bypassed the filter)
+- security: automatically set the `Secure` flag on the language cookie when `cookieSameSite: 'none'` — browsers reject `SameSite=None` without `Secure`
+- chore: ignore `.env*` and `*.pem`/`*.key` files in `.gitignore`
+
 ## [v3.9.2](https://github.com/i18next/i18next-http-middleware/compare/v3.9.1...v3.9.2)
 - TS definition for default export [#100](https://github.com/i18next/i18next-http-middleware/issues/100)
 

@@ -4,3 +4,8 @@ package-lock.json
 yarn.lock
 cjs
 esm
+.env
+.env.*
+!.env.example
+*.pem
+*.key

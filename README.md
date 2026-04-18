@@ -2,7 +2,6 @@
 
 [![Actions](https://github.com/i18next/i18next-http-middleware/workflows/node/badge.svg)](https://github.com/i18next/i18next-http-middleware/actions?query=workflow%3Anode)
 [![Actions deno](https://github.com/i18next/i18next-http-middleware/workflows/deno/badge.svg)](https://github.com/i18next/i18next-http-middleware/actions?query=workflow%3Adeno)
-[![Travis](https://img.shields.io/travis/i18next/i18next-http-middleware/master.svg?style=flat-square)](https://travis-ci.org/i18next/i18next-http-middleware)
 [![npm version](https://img.shields.io/npm/v/i18next-http-middleware.svg?style=flat-square)](https://www.npmjs.com/package/i18next-http-middleware)
 
 This is a middleware to be used with Node.js web frameworks like express or Fastify and also for Deno.
