@@ -11,6 +11,6 @@
     "express": "4.20.0",
     "i18next": "19.8.1",
     "i18next-http-middleware": "3.9.3",
-    "i18next-locize-backend": "4.0.7"
+    "i18next-locize-backend": "9.0.2"
   }
 }
