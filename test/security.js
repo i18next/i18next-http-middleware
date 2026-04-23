@@ -85,30 +85,54 @@ describe('security', () => {
     })
   })
 
-  describe('utils.isSafeIdentifier', () => {
+  describe('utils.isSafeLangIdentifier (strict — for `lng`)', () => {
     it('accepts arbitrary language codes (i18next permits any shape)', () => {
-      expect(utils.isSafeIdentifier('en')).to.be(true)
-      expect(utils.isSafeIdentifier('de-DE')).to.be(true)
-      expect(utils.isSafeIdentifier('en_US')).to.be(true)
-      expect(utils.isSafeIdentifier('zh-Hant-HK')).to.be(true)
-      expect(utils.isSafeIdentifier('pirate-speak')).to.be(true)
-      expect(utils.isSafeIdentifier('my-custom.ns')).to.be(true)
+      expect(utils.isSafeLangIdentifier('en')).to.be(true)
+      expect(utils.isSafeLangIdentifier('de-DE')).to.be(true)
+      expect(utils.isSafeLangIdentifier('en_US')).to.be(true)
+      expect(utils.isSafeLangIdentifier('zh-Hant-HK')).to.be(true)
+      expect(utils.isSafeLangIdentifier('pirate-speak')).to.be(true)
+      expect(utils.isSafeLangIdentifier('my-custom.ns')).to.be(true)
     })
 
     it('rejects path-traversal and prototype-pollution payloads', () => {
-      expect(utils.isSafeIdentifier('__proto__')).to.be(false)
-      expect(utils.isSafeIdentifier('constructor')).to.be(false)
-      expect(utils.isSafeIdentifier('prototype')).to.be(false)
-      expect(utils.isSafeIdentifier('../etc/passwd')).to.be(false)
-      expect(utils.isSafeIdentifier('..')).to.be(false)
-      expect(utils.isSafeIdentifier('foo/bar')).to.be(false)
-      expect(utils.isSafeIdentifier('foo\\bar')).to.be(false)
-      expect(utils.isSafeIdentifier('en\r\nX-Injected: bad')).to.be(false)
-      expect(utils.isSafeIdentifier('en\u0000')).to.be(false)
-      expect(utils.isSafeIdentifier('')).to.be(false)
-      expect(utils.isSafeIdentifier('a'.repeat(200))).to.be(false)
-      expect(utils.isSafeIdentifier(null)).to.be(false)
-      expect(utils.isSafeIdentifier({ toString: () => 'en' })).to.be(false)
+      expect(utils.isSafeLangIdentifier('__proto__')).to.be(false)
+      expect(utils.isSafeLangIdentifier('constructor')).to.be(false)
+      expect(utils.isSafeLangIdentifier('prototype')).to.be(false)
+      expect(utils.isSafeLangIdentifier('../etc/passwd')).to.be(false)
+      expect(utils.isSafeLangIdentifier('..')).to.be(false)
+      expect(utils.isSafeLangIdentifier('foo/bar')).to.be(false)
+      expect(utils.isSafeLangIdentifier('foo\\bar')).to.be(false)
+      expect(utils.isSafeLangIdentifier('en\r\nX-Injected: bad')).to.be(false)
+      expect(utils.isSafeLangIdentifier('en\u0000')).to.be(false)
+      expect(utils.isSafeLangIdentifier('')).to.be(false)
+      expect(utils.isSafeLangIdentifier('a'.repeat(200))).to.be(false)
+      expect(utils.isSafeLangIdentifier(null)).to.be(false)
+      expect(utils.isSafeLangIdentifier({ toString: () => 'en' })).to.be(false)
+    })
+
+    it('is still exported as `isSafeIdentifier` for 3.9.3 backwards compat', () => {
+      expect(utils.isSafeIdentifier).to.be(utils.isSafeLangIdentifier)
+    })
+  })
+
+  describe('utils.isSafeNsIdentifier (loose — for `ns`, allows `/`)', () => {
+    it('accepts nested namespace names with forward slashes', () => {
+      expect(utils.isSafeNsIdentifier('a/b')).to.be(true)
+      expect(utils.isSafeNsIdentifier('foo/bar/baz')).to.be(true)
+      expect(utils.isSafeNsIdentifier('common')).to.be(true)
+    })
+
+    it('still rejects every concrete attack pattern from the 3.9.3 advisory', () => {
+      expect(utils.isSafeNsIdentifier('__proto__')).to.be(false)
+      expect(utils.isSafeNsIdentifier('..')).to.be(false)
+      expect(utils.isSafeNsIdentifier('../etc/passwd')).to.be(false)
+      expect(utils.isSafeNsIdentifier('a/../b')).to.be(false)
+      expect(utils.isSafeNsIdentifier('foo\\bar')).to.be(false)
+      expect(utils.isSafeNsIdentifier('ns\r\n')).to.be(false)
+      expect(utils.isSafeNsIdentifier('ns\u0000')).to.be(false)
+      expect(utils.isSafeNsIdentifier('')).to.be(false)
+      expect(utils.isSafeNsIdentifier('a'.repeat(200))).to.be(false)
     })
   })
 
@@ -131,8 +155,10 @@ describe('security', () => {
 
       const handler = getResourcesHandler(i18n, {
         getQuery: () => ({
-          lng: '__proto__ ../etc/passwd en pirate-speak',
-          ns: '__proto__ ../secrets translation custom.ns'
+          // `nested/ns` is legitimate (nested namespace — kept).
+          // `en/foo` is illegitimate for lng (no language code has `/`, dropped).
+          lng: '__proto__ ../etc/passwd en pirate-speak en/foo',
+          ns: '__proto__ ../secrets translation custom.ns nested/ns'
         }),
         getParams: () => ({}),
         setContentType: () => {},
@@ -147,9 +173,11 @@ describe('security', () => {
       expect(loadCalls).to.have.length(1)
       // attack payloads dropped; legitimate values (including non-BCP-47 ones) kept
       expect(loadCalls[0].lngs).to.eql(['en', 'pirate-speak'])
-      expect(loadCalls[0].nss).to.eql(['translation', 'custom.ns'])
+      expect(loadCalls[0].nss).to.eql(['translation', 'custom.ns', 'nested/ns'])
       expect(i18n.options.ns.filter(n => n.indexOf('..') > -1 || n === '__proto__')).to.eql([])
       expect(i18n.options.ns).to.contain(nsBefore[0])
+      // nested ns was kept (regression guard for fs-backend#74 / follow-up 3.9.4)
+      expect(i18n.options.ns).to.contain('nested/ns')
     })
   })
 
