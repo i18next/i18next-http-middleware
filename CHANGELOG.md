@@ -1,3 +1,6 @@
+## [v3.9.4](https://github.com/i18next/i18next-http-middleware/compare/v3.9.3...v3.9.4)
+- Add `Set-Cookie` header to response in Fresh plugin so language preference persists across reloads/new tabs [#125](https://github.com/i18next/i18next-http-middleware/pull/125)
+
 ## [v3.9.3](https://github.com/i18next/i18next-http-middleware/compare/v3.9.2...v3.9.3)
 Security release — all issues found via an internal audit. See published GHSA advisories [GHSA-5fgg-jcpf-8jjw](https://github.com/i18next/i18next-http-middleware/security/advisories/GHSA-5fgg-jcpf-8jjw) and [GHSA-c3h8-g69v-pjrg](https://github.com/i18next/i18next-http-middleware/security/advisories/GHSA-c3h8-g69v-pjrg).
 - security: guard `utils.setPath` against prototype pollution via crafted `lng`/`ns` in `getResourcesHandler` ([GHSA-5fgg-jcpf-8jjw](https://github.com/i18next/i18next-http-middleware/security/advisories/GHSA-5fgg-jcpf-8jjw))
