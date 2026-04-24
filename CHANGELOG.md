@@ -1,3 +1,8 @@
+## [v3.9.6](https://github.com/i18next/i18next-http-middleware/compare/v3.9.5...v3.9.6)
+
+- Fix cookie header being overwritten instead of appended
+[#126](https://github.com/i18next/i18next-http-middleware/pull/126)
+
 ## [v3.9.5](https://github.com/i18next/i18next-http-middleware/compare/v3.9.4...v3.9.5)
 - fix: allow forward slashes in `ns` values so nested namespace names (mapping to subfolder locale layouts such as `public/locales/en/a/b.json` on fs-backend, `/locales/en/a/b.json` on http-backend) are no longer dropped by `getResourcesHandler`. 3.9.3's security fix applied the same strict identifier check to both `lng` and `ns` via `utils.isSafeIdentifier`, which was correct for `lng` (no BCP-47 shape contains `/`) but over-strict for `ns` — nested namespaces containing `/` were never officially supported, but the behaviour fell out of the implicit string-substitution semantics of the backend `loadPath` and is common enough in the wild to be worth accommodating. `isSafeIdentifier` is now split into `isSafeLangIdentifier` (strict — still rejects `/`) and `isSafeNsIdentifier` (loose — allows `/` but still rejects `..`, `\`, control chars, prototype keys, and oversized inputs). `isSafeIdentifier` is kept as a backwards-compatible alias for the strict check. The 3.9.3 security fix remains in force for every concrete attack pattern from the original advisory.
 
