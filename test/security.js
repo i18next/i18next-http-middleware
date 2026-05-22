@@ -83,6 +83,132 @@ describe('security', () => {
       expect(keys).not.to.contain('prototype')
       expect(({}).isAdmin).to.be(undefined)
     })
+
+    it('ignores dotted keys whose segments contain __proto__ / constructor / prototype', () => {
+      // Defense-in-depth for the case where a downstream backend splits
+      // the missing-key string on keySeparator before persisting (e.g.
+      // i18next-fs-backend's writeFile). Without this, `__proto__.polluted`
+      // would reach the backend as `['__proto__','polluted']`.
+      const saved = []
+      const fakeI18next = {
+        options: { keySeparator: '.' },
+        services: {
+          backendConnector: {
+            saveMissing (lngs, ns, key, value) { saved.push({ lngs, ns, key, value }) }
+          }
+        }
+      }
+      const handler = missingKeyHandler(fakeI18next, {
+        getParams: () => ({ lng: 'en', ns: 'translation' }),
+        getBody: () => ({
+          '__proto__.polluted': 'PWNED',
+          'constructor.prototype.polluted': 'PWNED',
+          'a.__proto__.polluted': 'PWNED',
+          'a.prototype': 'PWNED',
+          'header.title': 'Welcome'
+        }),
+        send: (_res, msg) => msg,
+        setStatus: () => {}
+      })
+      handler({}, {})
+      const keys = saved.map(s => s.key)
+      // legitimate dotted key (no unsafe segment) is still forwarded
+      expect(keys).to.contain('header.title')
+      // all unsafe-segment variants are dropped
+      expect(keys).not.to.contain('__proto__.polluted')
+      expect(keys).not.to.contain('constructor.prototype.polluted')
+      expect(keys).not.to.contain('a.__proto__.polluted')
+      expect(keys).not.to.contain('a.prototype')
+      expect(({}).polluted).to.be(undefined)
+      expect(Object.prototype.polluted).to.be(undefined)
+    })
+
+    it('respects custom keySeparator (rejects unsafe segments under that sep)', () => {
+      const saved = []
+      const fakeI18next = {
+        options: { keySeparator: ':' },
+        services: {
+          backendConnector: {
+            saveMissing (lngs, ns, key, value) { saved.push({ lngs, ns, key, value }) }
+          }
+        }
+      }
+      const handler = missingKeyHandler(fakeI18next, {
+        getParams: () => ({ lng: 'en', ns: 'translation' }),
+        getBody: () => ({
+          '__proto__:polluted': 'PWNED',
+          'header:title': 'Welcome',
+          // a `.` is just a normal char when sep=:, so this is a legitimate
+          // (if unusual) single key — keep it
+          '__proto__.polluted': 'odd-but-safe-under-:-sep'
+        }),
+        send: (_res, msg) => msg,
+        setStatus: () => {}
+      })
+      handler({}, {})
+      const keys = saved.map(s => s.key)
+      expect(keys).to.contain('header:title')
+      expect(keys).to.contain('__proto__.polluted')
+      expect(keys).not.to.contain('__proto__:polluted')
+    })
+
+    it('keySeparator=false: only literal unsafe keys are rejected', () => {
+      const saved = []
+      const fakeI18next = {
+        options: { keySeparator: false },
+        services: {
+          backendConnector: {
+            saveMissing (lngs, ns, key, value) { saved.push({ lngs, ns, key, value }) }
+          }
+        }
+      }
+      const handler = missingKeyHandler(fakeI18next, {
+        getParams: () => ({ lng: 'en', ns: 'translation' }),
+        getBody: () => ({
+          // literal — still rejected
+          __proto__: 'no',
+          // single string, no splitting at the backend
+          '__proto__.polluted': 'ok',
+          'header.title': 'ok'
+        }),
+        send: (_res, msg) => msg,
+        setStatus: () => {}
+      })
+      handler({}, {})
+      const keys = saved.map(s => s.key)
+      expect(keys).not.to.contain('__proto__')
+      expect(keys).to.contain('__proto__.polluted')
+      expect(keys).to.contain('header.title')
+    })
+  })
+
+  describe('utils.hasUnsafeKeySegment', () => {
+    it('rejects literal unsafe keys', () => {
+      expect(utils.hasUnsafeKeySegment('__proto__', '.')).to.be(true)
+      expect(utils.hasUnsafeKeySegment('constructor', '.')).to.be(true)
+      expect(utils.hasUnsafeKeySegment('prototype', '.')).to.be(true)
+    })
+    it('rejects dotted keys whose segments are unsafe', () => {
+      expect(utils.hasUnsafeKeySegment('__proto__.polluted', '.')).to.be(true)
+      expect(utils.hasUnsafeKeySegment('a.__proto__', '.')).to.be(true)
+      expect(utils.hasUnsafeKeySegment('a.constructor.prototype', '.')).to.be(true)
+    })
+    it('accepts legitimate dotted keys', () => {
+      expect(utils.hasUnsafeKeySegment('header.title', '.')).to.be(false)
+      expect(utils.hasUnsafeKeySegment('a.b.c', '.')).to.be(false)
+    })
+    it('respects keySeparator', () => {
+      expect(utils.hasUnsafeKeySegment('__proto__:x', ':')).to.be(true)
+      expect(utils.hasUnsafeKeySegment('__proto__.polluted', ':')).to.be(false)
+    })
+    it('keySeparator=false skips segment splitting (only literal check)', () => {
+      expect(utils.hasUnsafeKeySegment('__proto__', false)).to.be(true)
+      expect(utils.hasUnsafeKeySegment('__proto__.polluted', false)).to.be(false)
+    })
+    it('passes non-string keys through unchanged (truthy keys are stringified upstream)', () => {
+      expect(utils.hasUnsafeKeySegment(undefined, '.')).to.be(false)
+      expect(utils.hasUnsafeKeySegment(null, '.')).to.be(false)
+    })
   })
 
   describe('utils.isSafeLangIdentifier (strict — for `lng`)', () => {

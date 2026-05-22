@@ -1,3 +1,7 @@
+## [v3.9.7](https://github.com/i18next/i18next-http-middleware/compare/v3.9.6...v3.9.7)
+Security release — coordinated disclosure from [@codeswhite](https://github.com/codeswhite). See published advisory [GHSA-xxxx-xxxx-xxxx](https://github.com/i18next/i18next-http-middleware/security/advisories/GHSA-xxxx-xxxx-xxxx).
+- security: extend the `missingKeyHandler` prototype-pollution guard to also reject dotted (or otherwise `keySeparator`-segmented) keys whose segments contain `__proto__`, `constructor`, or `prototype`. The 3.9.3 fix blocked the literal keys but missed dotted variants like `__proto__.polluted`, which downstream backends that split the missing-key string on `keySeparator` before persisting (notably `i18next-fs-backend` ≤ 2.6.5 in its now-patched `writeFile()` path) walked into `Object.prototype`. New `utils.hasUnsafeKeySegment(key, keySeparator)` helper is now used by `missingKeyHandler`; the configured `i18next.options.keySeparator` is honoured (default `.`; `false` disables segment splitting and only the literal-key denylist applies). Pairs with the root-cause fix in `i18next-fs-backend` 2.6.6. Credit: [@codeswhite](https://github.com/codeswhite) ([GHSA-xxxx-xxxx-xxxx](https://github.com/i18next/i18next-http-middleware/security/advisories/GHSA-xxxx-xxxx-xxxx)).
+
 ## [v3.9.6](https://github.com/i18next/i18next-http-middleware/compare/v3.9.5...v3.9.6)
 
 - Fix cookie header being overwritten instead of appended
