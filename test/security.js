@@ -307,6 +307,101 @@ describe('security', () => {
     })
   })
 
+  describe('missingKeyHandler lng/ns params', () => {
+    const makeHandler = (i18n, params, calls) => {
+      i18n.services.backendConnector.saveMissing = (lngs, ns, key, value) => {
+        calls.push({ lngs: [...lngs], ns, key, value })
+      }
+      const res = { status: undefined, sent: undefined }
+      const handler = missingKeyHandler(i18n, {
+        getParams: () => params,
+        getBody: () => ({ someKey: 'someValue' }),
+        setStatus: (r, code) => { res.status = code },
+        send: (r, body) => { res.sent = body; return body }
+      })
+      return { handler, res }
+    }
+
+    let i18n
+    beforeEach(async () => {
+      i18n = i18next.createInstance()
+      await i18n.init({ fallbackLng: 'en', ns: ['translation'], resources: { en: { translation: {} } } })
+    })
+
+    it('rejects a traversal payload in lng before it reaches saveMissing', () => {
+      const calls = []
+      // route params arrive percent-decoded, so `..%2f..%2ftmp%2fpwned`
+      // reaches the handler as a real traversal path
+      const { handler, res } = makeHandler(i18n, { lng: '../../tmp/pwned', ns: 'translation' }, calls)
+      handler({}, {})
+      expect(calls).to.eql([])
+      expect(res.status).to.be(400)
+    })
+
+    it('rejects a traversal payload in ns before it reaches saveMissing', () => {
+      const calls = []
+      const { handler, res } = makeHandler(i18n, { lng: 'en', ns: '../../tmp/pwned' }, calls)
+      handler({}, {})
+      expect(calls).to.eql([])
+      expect(res.status).to.be(400)
+    })
+
+    it('rejects __proto__ as lng (fs-backend queuedWrites pollution sink)', () => {
+      const calls = []
+      const { handler, res } = makeHandler(i18n, { lng: '__proto__', ns: 'translation' }, calls)
+      handler({}, {})
+      expect(calls).to.eql([])
+      expect(res.status).to.be(400)
+      expect(({}).translation).to.be(undefined)
+    })
+
+    it('still forwards legitimate values, including nested namespaces', () => {
+      const calls = []
+      const { handler } = makeHandler(i18n, { lng: 'pirate-speak', ns: 'nested/ns' }, calls)
+      handler({}, {})
+      expect(calls).to.have.length(1)
+      expect(calls[0].lngs).to.eql(['pirate-speak'])
+      expect(calls[0].ns).to.be('nested/ns')
+      expect(calls[0].key).to.be('someKey')
+    })
+  })
+
+  describe('LanguageDetector drops unsafe detected languages', () => {
+    let services
+    before(async () => {
+      const i18n = i18next.createInstance()
+      await i18n.init({ fallbackLng: 'en', supportedLngs: false, resources: { en: { translation: {} } } })
+      services = i18n.services
+    })
+
+    const detectWith = (lng, extraOptions = {}) => {
+      const ld = new LanguageDetector(services, {
+        order: ['querystring'],
+        lookupQuerystring: 'lng',
+        ...extraOptions
+      })
+      return ld.detect({ url: '/?lng=' + lng, query: { lng } }, {})
+    }
+
+    it('drops traversal payloads that hasXSS does not catch', () => {
+      expect(detectWith('../../../etc/passwd')).not.to.be('../../../etc/passwd')
+      expect(detectWith('foo/bar')).not.to.be('foo/bar')
+      expect(detectWith('__proto__')).not.to.be('__proto__')
+    })
+
+    it('still detects legitimate language codes', () => {
+      expect(detectWith('de-DE')).to.be('de-DE')
+    })
+
+    it('applies the check after convertDetectedLanguage', () => {
+      // a custom converter must not be able to reintroduce an unsafe value
+      const converted = detectWith('en', {
+        convertDetectedLanguage: () => '../../../etc/passwd'
+      })
+      expect(converted).not.to.be('../../../etc/passwd')
+    })
+  })
+
   describe('cookie SameSite=None enforces Secure', () => {
     it('adds Secure automatically when SameSite=None is set', () => {
       const ld = new LanguageDetector(i18next.services, {
