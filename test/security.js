@@ -23,6 +23,20 @@ describe('security', () => {
       utils.setPath(target, ['en', 'common'], { k: 'v' })
       expect(target.en.common.k).to.eql('v')
     })
+
+    it('does not pollute inherited Object.prototype members (GHSA-r4j4-5cw9-pwgj)', () => {
+      // The denylist only covers __proto__/constructor/prototype. Inherited
+      // members like hasOwnProperty are truthy, so the old `!object[key]`
+      // existence test skipped autovivify and walked into Object.prototype;
+      // `GET /locales/hasOwnProperty/call` then overwrote
+      // Object.prototype.hasOwnProperty.call and 500'd every route.
+      for (const k of ['hasOwnProperty', 'valueOf', 'toString', 'isPrototypeOf', 'propertyIsEnumerable']) {
+        utils.setPath({}, [k, 'call'], 'PWNED')
+        expect(typeof Object.prototype.hasOwnProperty.call).to.equal('function')
+        expect(typeof ({})[k]).to.equal('function')
+        expect(Object.prototype.hasOwnProperty.call({ a: 1 }, 'a')).to.be(true)
+      }
+    })
   })
 
   describe('utils.sanitizeHeaderValue', () => {
