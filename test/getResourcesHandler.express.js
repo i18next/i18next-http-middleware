@@ -46,4 +46,33 @@ describe('getResourcesHandler express', () => {
         })
     })
   })
+
+  describe('handling a request for a language not loaded yet by an async backend', () => {
+    const i18n = i18next.createInstance()
+    i18n.use({
+      type: 'backend',
+      init () {},
+      read (lng, ns, callback) {
+        setTimeout(() => callback(null, { hi: `there (${lng})` }), 10)
+      }
+    }).init({ fallbackLng: 'en' })
+
+    const app = express()
+    app.get('/', i18nextMiddleware.getResourcesHandler(i18n))
+
+    it('should wait for the backend and return the loaded resource', (done) => {
+      request(app)
+        .get('/')
+        .query({
+          lng: 'de',
+          ns: 'translation'
+        })
+        .expect('content-type', /json/)
+        .expect(200, (err, res) => {
+          expect(err).not.to.be.ok()
+          expect(res.body).to.eql({ de: { translation: { hi: 'there (de)' } } })
+          done()
+        })
+    })
+  })
 })
