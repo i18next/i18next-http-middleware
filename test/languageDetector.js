@@ -201,6 +201,13 @@ describe('language detector', () => {
       expect(lng).to.eql('pt-BR')
       // expect(res).to.eql({})
     })
+
+    it('does not detect a language with zero quality', () => {
+      const detector = new LanguageDetector(i18next.services, { order: ['header'] }, { fallbackLng: 'en' })
+      const req = { headers: { 'accept-language': 'de;q=0' } }
+
+      expect(detector.detect(req, {})).to.eql('en')
+    })
   })
 
   describe('path', () => {
