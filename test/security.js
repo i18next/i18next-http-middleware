@@ -226,13 +226,23 @@ describe('security', () => {
   })
 
   describe('utils.isSafeLangIdentifier (strict — for `lng`)', () => {
-    it('accepts arbitrary language codes (i18next permits any shape)', () => {
+    it('accepts language codes in any common format (not only BCP 47)', () => {
       expect(utils.isSafeLangIdentifier('en')).to.be(true)
       expect(utils.isSafeLangIdentifier('de-DE')).to.be(true)
       expect(utils.isSafeLangIdentifier('en_US')).to.be(true)
       expect(utils.isSafeLangIdentifier('zh-Hant-HK')).to.be(true)
       expect(utils.isSafeLangIdentifier('pirate-speak')).to.be(true)
       expect(utils.isSafeLangIdentifier('my-custom.ns')).to.be(true)
+      expect(utils.isSafeLangIdentifier('sr@latin')).to.be(true)
+      expect(utils.isSafeLangIdentifier('de_DE.UTF-8')).to.be(true)
+    })
+
+    it('rejects markup, quotes, spaces and `=`, which could break out of `<html lang>`', () => {
+      expect(utils.isSafeLangIdentifier('" onmouseover="x()')).to.be(false)
+      expect(utils.isSafeLangIdentifier('"><img src=x onerror=alert(1)>')).to.be(false)
+      expect(utils.isSafeLangIdentifier('<b>x</b>')).to.be(false)
+      expect(utils.isSafeLangIdentifier('en US')).to.be(false)
+      expect(utils.isSafeLangIdentifier('javascript:alert(1)')).to.be(false)
     })
 
     it('rejects path-traversal and prototype-pollution payloads', () => {

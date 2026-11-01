@@ -28,7 +28,8 @@ describe('language detector', () => {
       }
       const res = {}
       const lng = ld.detect(req, res)
-      expect(lng).to.eql('%')
+      // not a language code: skipped instead of becoming the language
+      expect(lng).to.be(undefined)
     })
 
     it('cacheUserLanguage', () => {
@@ -286,7 +287,8 @@ describe('language detector (ISO 15897 locales)', () => {
       }
       const res = {}
       const lng = ld.detect(req, res)
-      expect(lng).to.eql('%')
+      // not a language code: skipped instead of becoming the language
+      expect(lng).to.be(undefined)
     })
 
     it('cacheUserLanguage', () => {
