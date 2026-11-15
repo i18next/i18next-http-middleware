@@ -417,6 +417,28 @@ describe('security', () => {
       await i18n.init({ fallbackLng: 'en', ns: ['translation'], resources: { en: { translation: {} } } })
     })
 
+    it('keeps the shared ns list as it was for namespaces from requests', () => {
+      let params
+      const handler = missingKeyHandler(i18n, {
+        getParams: () => params,
+        getBody: () => ({ k: 'v' }),
+        setStatus: () => {},
+        send: (r, body) => body
+      })
+      for (let i = 0; i < 100; i++) {
+        params = { lng: 'en', ns: `made-up-${i}` }
+        handler({}, {})
+      }
+      params = { lng: 'en', ns: 'translation' }
+      handler({}, {})
+
+      // saveMissing adds the namespace to the shared list, which every request walks
+      expect(i18n.options.ns).to.eql(['translation'])
+      // the missing keys are still saved
+      expect(i18n.getResource('en', 'made-up-0', 'k')).to.be('v')
+      expect(i18n.getResource('en', 'translation', 'k')).to.be('v')
+    })
+
     it('rejects a traversal payload in lng before it reaches saveMissing', () => {
       const calls = []
       // route params arrive percent-decoded, so `..%2f..%2ftmp%2fpwned`

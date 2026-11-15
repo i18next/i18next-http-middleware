@@ -270,6 +270,9 @@ const app = new App()
 
 ```js
 // missing keys make sure the body is parsed (i.e. with [body-parser](https://github.com/expressjs/body-parser#bodyparserjsonoptions))
+// this route takes writes from anyone who can reach it: every key in the body goes to the
+// backend's create (i18next-fs-backend writes it into a file) and stays in the server's memory,
+// so mount it only in development or behind authentication
 app.post('/locales/add/:lng/:ns', middleware.missingKeyHandler(i18next))
 // addPath for client: http://localhost:8080/locales/add/{{lng}}/{{ns}}
 
