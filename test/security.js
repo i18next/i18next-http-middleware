@@ -2,7 +2,7 @@ import expect from 'expect.js'
 import i18next from 'i18next'
 import * as utils from '../lib/utils.js'
 import LanguageDetector from '../lib/LanguageDetector.js'
-import { getResourcesHandler, missingKeyHandler } from '../lib/index.js'
+import { handle, getResourcesHandler, missingKeyHandler } from '../lib/index.js'
 
 // Tests covering the security fixes shipped in 3.9.3.
 // See CHANGELOG.md for the associated advisories.
@@ -292,7 +292,7 @@ describe('security', () => {
       await i18n.init({
         fallbackLng: 'en',
         ns: ['translation'],
-        resources: { en: { translation: { hi: 'hello' } } }
+        resources: { en: { translation: { hi: 'hello' }, 'nested/ns': { a: 'b' } } }
       })
 
       const nsBefore = [...i18n.options.ns]
@@ -328,6 +328,71 @@ describe('security', () => {
       expect(i18n.options.ns).to.contain(nsBefore[0])
       // nested ns was kept (regression guard for fs-backend#74 / follow-up 3.9.4)
       expect(i18n.options.ns).to.contain('nested/ns')
+      // a namespace the backend does not have is not kept in the shared list
+      expect(i18n.options.ns).not.to.contain('custom.ns')
+    })
+
+    it('does not grow the shared ns list with namespaces the backend does not have', async () => {
+      const i18n = i18next.createInstance()
+      await i18n.init({
+        fallbackLng: 'en',
+        ns: ['translation'],
+        resources: { en: { translation: { hi: 'hello' }, common: { ok: 'ok' } } }
+      })
+      // the backend has nothing beyond the resources above
+      i18n.services.backendConnector.load = (lngs, nss, cb) => cb()
+
+      let ns
+      const handler = getResourcesHandler(i18n, {
+        getQuery: () => ({ lng: 'en', ns }),
+        getParams: () => ({}),
+        setContentType: () => {},
+        setHeader: () => {},
+        getHeader: () => undefined,
+        send: () => 'sent'
+      })
+      for (let i = 0; i < 1000; i++) {
+        ns = `made-up-${i}`
+        handler({}, {})
+      }
+      ns = 'common'
+      handler({}, {})
+
+      expect(i18n.options.ns).to.eql(['translation', 'common'])
+    })
+  })
+
+  describe('handle', () => {
+    it('loads a detected language without adding it to the shared preload list', async () => {
+      const reads = []
+      const backend = {
+        type: 'backend',
+        init () {},
+        read (lng, ns, cb) {
+          reads.push(lng)
+          cb(null, lng === 'de' ? { hi: 'hallo' } : false)
+        }
+      }
+      const i18n = i18next.createInstance()
+      await i18n.use(backend).use(LanguageDetector).init({
+        fallbackLng: 'en',
+        preload: ['en'],
+        detection: { order: ['querystring'] }
+      })
+      const middleware = handle(i18n)
+      const request = (lng) => new Promise(resolve => {
+        const req = { query: { lng }, headers: {} }
+        middleware(req, {}, () => resolve(req))
+      })
+
+      for (let i = 0; i < 100; i++) await request(`made-up-${i}`)
+      const req = await request('de')
+
+      // every request used to append its language to i18next.options.preload, which every later request walks
+      expect(i18n.options.preload).to.eql(['en'])
+      expect(req.t('hi')).to.eql('hallo')
+      expect(i18n.hasResourceBundle('de', 'translation')).to.be(true)
+      expect(reads.filter(lng => lng === 'de')).to.have.length(1)
     })
   })
 
