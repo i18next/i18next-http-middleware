@@ -51,4 +51,32 @@ describe('middleware koa', () => {
         })
     })
   })
+
+  describe('a language in the cookie', () => {
+    const inst = i18next.createInstance().use(i18nextMiddleware.LanguageDetector)
+    const app = new Koa()
+    app.use(i18nextMiddleware.koaPlugin(inst))
+    app.use((ctx) => {
+      ctx.body = ctx.lng
+    })
+    let server
+
+    before((done) => {
+      inst.init({ fallbackLng: 'en', preload: ['en', 'de'] }, () => {
+        server = app.listen(7003, done)
+      })
+    })
+    after((done) => server.close(done))
+
+    it('is detected (ctx.cookies is a Cookies object, not a map of the cookies)', (done) => {
+      request(server)
+        .get('/')
+        .set('Cookie', 'i18next=de')
+        .expect(200, (err, res) => {
+          expect(err).not.to.be.ok()
+          expect(res.text).to.eql('de')
+          done()
+        })
+    })
+  })
 })
