@@ -32,6 +32,18 @@ describe('language detector', () => {
       expect(lng).to.be(undefined)
     })
 
+    it('detects a language it cached in the cookie', () => {
+      const res = { headers: {} }
+      res.header = (name, value) => { res.headers[name] = value }
+      ld.cacheUserLanguage({}, res, 'sr@latin', ['cookie'])
+      const req = {
+        headers: {
+          cookie: res.headers['Set-Cookie'].split(';')[0]
+        }
+      }
+      expect(ld.detect(req, {})).to.eql('sr@latin')
+    })
+
     it('cacheUserLanguage', () => {
       const req = {}
       const res = {
