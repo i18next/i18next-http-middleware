@@ -58,6 +58,10 @@ interface GetResourcesHandlerOptions extends ExtendedOptions {
   cache?: boolean;
   lngParam?: string;
   nsParam?: string;
+  /** most languages one request may ask for, more are answered with a 400 (default 40) */
+  maxLanguages?: number;
+  /** most namespaces one request may ask for, more are answered with a 400 (default 200) */
+  maxNamespaces?: number;
 }
 
 interface MissingKeyHandlerOptions extends ExtendedOptions {

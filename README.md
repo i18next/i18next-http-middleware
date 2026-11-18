@@ -295,7 +295,9 @@ app.get('/locales/:lng/:ns', middleware.getResourcesHandler(i18next))
 
 app.get('/locales/:lng/:ns', middleware.getResourcesHandler(i18next, {
   maxAge: 60 * 60 * 24 * 30, // adds appropriate cache header if cache option is passed or NODE_ENV === 'production', defaults to 30 days
-  cache: true // defaults to false
+  cache: true, // defaults to false
+  maxLanguages: 40, // a request with more languages is answered with a 400, defaults to 40
+  maxNamespaces: 200 // a request with more namespaces is answered with a 400, defaults to 200
 }))
 ```
 

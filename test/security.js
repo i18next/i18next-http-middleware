@@ -360,6 +360,40 @@ describe('security', () => {
 
       expect(i18n.options.ns).to.eql(['translation', 'common'])
     })
+
+    it('answers a request for more languages or namespaces than allowed with a 400 (GHSA-ccfc-2jr7-wr97)', async () => {
+      const i18n = i18next.createInstance()
+      await i18n.init({ fallbackLng: 'en', resources: { en: { translation: { hi: 'hello' } } } })
+      let reads = 0
+      i18n.services.backendConnector.load = (lngs, nss, cb) => { reads += lngs.length * nss.length; cb() }
+
+      const list = (prefix, n) => Array.from({ length: n }, (_, i) => prefix + i).join(' ')
+      const request = (lng, ns, options = {}) => {
+        let status = 200
+        let body
+        getResourcesHandler(i18n, {
+          ...options,
+          getQuery: () => ({ lng, ns }),
+          getParams: () => ({}),
+          setContentType: () => {},
+          setHeader: () => {},
+          getHeader: () => undefined,
+          setStatus: (res, code) => { status = code },
+          send: (res, b) => { body = b }
+        })({}, {})
+        return { status, body }
+      }
+
+      expect(request(list('a', 41), 'translation').status).to.be(400)
+      expect(request('en', list('b', 201)).status).to.be(400)
+      expect(reads).to.be(0)
+
+      expect(request(list('a', 40), list('b', 200)).status).to.be(200)
+      expect(reads).to.be(8000)
+
+      expect(request(list('a', 41), 'translation', { maxLanguages: 50 }).status).to.be(200)
+      expect(request('en', list('b', 11), { maxNamespaces: 10 }).body).to.be('i18next-http-middleware:: more than 40 languages or 10 namespaces')
+    })
   })
 
   describe('handle', () => {
