@@ -53,5 +53,26 @@ describe('missingKeyHandler custom framework', () => {
       }
       handle(req, res)
     })
+
+    it('passes an error from saving a body that is read async on to the framework', (done) => {
+      // a body read async (abc's `ctx.body()` on Deno): an error while saving used to be an
+      // unhandled rejection, which ends a Node.js process, and the request never got an answer
+      const connector = i18next.services.backendConnector
+      const saveMissing = connector.saveMissing
+      connector.saveMissing = () => { throw new Error('boom') }
+      const handleAsync = i18nextMiddleware.missingKeyHandler(i18next, {
+        getParams: (req) => req.p,
+        getBody: (req) => () => Promise.resolve(req.b),
+        send: () => {}
+      })
+      handleAsync({ p: { lng: 'en', ns: 'translation' }, b: { miss: 'key' } }, {}).then(
+        () => { connector.saveMissing = saveMissing; done(new Error('resolved')) },
+        (e) => {
+          connector.saveMissing = saveMissing
+          try { expect(e.message).to.be('boom') } catch (err) { return done(err) }
+          done()
+        }
+      )
+    })
   })
 })
