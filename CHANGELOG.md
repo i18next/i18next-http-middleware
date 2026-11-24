@@ -1,3 +1,6 @@
+## [v3.11.1](https://github.com/i18next/i18next-http-middleware/compare/v3.11.0...v3.11.1)
+- fix: `missingKeyHandler` passes an error while saving a body that is read async (abc's `ctx.body()` on Deno) on to the framework, like it does for a body read sync. It was an unhandled rejection, which ends the process, and the request never got an answer.
+
 ## [v3.11.0](https://github.com/i18next/i18next-http-middleware/compare/v3.10.3...v3.11.0)
 Security release. Coordinated disclosure from [@superbot-helper](https://github.com/superbot-helper). See published advisory [GHSA-ccfc-2jr7-wr97](https://github.com/i18next/i18next-http-middleware/security/advisories/GHSA-ccfc-2jr7-wr97).
 - security: `getResourcesHandler` answers a request for more than 40 languages or more than 200 namespaces with a 400. i18next reads every requested language with every namespace, so the work of one request grows with the product of both lists: 500 made-up languages and 500 namespaces in a 3 kB query string asked the backend for 250,000 reads and kept the server busy for 20 seconds, and longer lists for minutes. The limits can be changed with the new `maxLanguages` and `maxNamespaces` options.
